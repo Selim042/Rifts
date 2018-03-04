@@ -1,0 +1,21 @@
+{
+  "modListVersion": 2,
+  "modList": [{
+    "modid": "SelimRandomStuff",
+    "name": "Selim's Random Stuff",
+    "description": "Random features added by Selim.",
+    "version": "3.1.0",
+    "mcversion": "1.10.2",
+    "url": "https://mods.curse.com/mc-mods/minecraft/233164-",
+    "updateUrl": "",
+    "authorList": [ "Selim" ],
+    "credits": "Written by Selim, textures by AquaticAbyss and friends.",
+    "logoFile": "",
+    "screenshots": [ "" ],
+    "parent": "",
+    "requiredMods": [ "Forge" ],
+    "dependencies": [ "" ],
+    "dependants": [ "" ],
+    "useDependencyInformation": true
+  }]
+}

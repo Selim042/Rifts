@@ -1,0 +1,22 @@
+{
+    "display": {
+        "icon": {
+            "item": "enderrifts:barite"
+        },
+        "title": {
+            "translate": "advancements.enderrifts:rift_overworld.title"
+        },
+        "description": {
+            "translate": "advancements.enderrifts:rift_overworld.description"
+        }
+    },
+    "parent": "minecraft:husbandry/root",
+    "criteria": {
+        "enderrifts:rift_trigger": {
+            "trigger": "enderrifts:rift_trigger",
+            "conditions": {
+                
+            }
+        }
+    }
+}

@@ -1,0 +1,56 @@
+
+item.enderrifts:universal_dye_white.name=White Universal Dye
+item.enderrifts:universal_dye_orange.name=Orange Universal Dye
+item.enderrifts:universal_dye_magenta.name=Magenta Universal Dye
+item.enderrifts:universal_dye_light_blue.name=Light Blue Universal Dye
+item.enderrifts:universal_dye_yellow.name=Yellow Universal Dye
+item.enderrifts:universal_dye_lime.name=Lime Universal Dye
+item.enderrifts:universal_dye_pink.name=Pink Universal Dye
+item.enderrifts:universal_dye_gray.name=Gray Universal Dye
+item.enderrifts:universal_dye_silver.name=Silver Universal Dye
+item.enderrifts:universal_dye_cyan.name=Cyan Universal Dye
+item.enderrifts:universal_dye_purple.name=Purple Universal Dye
+item.enderrifts:universal_dye_blue.name=Blue Universal Dye
+item.enderrifts:universal_dye_brown.name=Brown Universal Dye
+item.enderrifts:universal_dye_green.name=Green Universal Dye
+item.enderrifts:universal_dye_red.name=Red Universal Dye
+item.enderrifts:universal_dye_black.name=Black Universal Dye
+item.enderrifts:amethyst.name=Amethyst
+item.enderrifts:opal.name=Opal
+item.enderrifts:phantom_pearl.name=Phantom Pearl
+item.enderrifts:rift_transport_node.name=Rift Transport Node
+item.enderrifts:ender_link.name=Ender Link
+item.enderrifts:rift_eye.name=Rift's Eye
+
+tile.enderrifts:rift_flower.name=Rift Flower
+tile.enderrifts:amethyst_block.name=Amethyst Block
+tile.enderrifts:amethyst_torch.name=Amethyst Torch
+tile.enderrifts:amethyst_ore.name=Amethyst Ore
+tile.enderrifts:opal_block.name=Opal Block
+tile.enderrifts:opal_ore.name=Opal Ore
+tile.enderrifts:barite.name=Barite
+tile.enderrifts:barite_rough.name=Barite
+tile.enderrifts:barite_smooth.name=Polished Barite
+tile.enderrifts:barite_brick.name=Barite Bricks
+tile.enderrifts:barite_april_fools.name=Baconite
+tile.enderrifts:barite_april_fools_rough.name=Baconite
+tile.enderrifts:barite_april_fools_smooth.name=Polished Baconite
+tile.enderrifts:barite_april_fools_brick.name=Baconite Bricks
+
+itemGroup.enderrifts:main=Ender Rifts
+
+rift_category.enderrifts:primary_category.name=The Rift
+rift_category.enderrifts:rift_overworld.name=Overworld
+
+rift_entry.enderrifts:the_rift.name=The Rift Basics
+rift_entry.enderrifts:rift_decay.name=Rift Decay
+rift_entry.enderrifts:barite.name=Barite
+
+rift_page.enderrifts:rift_basics_0_0.name=The Rift fills the void between dimensions where distance is meaningless.
+rift_page.enderrifts:rift_basics_0_1.name=Various creatures use it to travel long distances very quickly, even between worlds.
+rift_page.enderrifts:rift_basics_0_2.name=A common example of this behavior is Endermen and Nether portals.
+rift_page.enderrifts:rift_basics_1_0.name=When you enter the rift you will find rare resources only available there in a "corrupted" version of the world you were last in.
+rift_page.enderrifts:rift_basics_1_1.name=But beware, the Rift is quite dangerous.  See next entry.
+rift_page.enderrifts:rift_decay_0_0.name=If you haven't yet noticed, things aren't exactly the same in the Rift.  Some blocks are missing, some are completely different.
+rift_page.enderrifts:rift_decay_0_1.name=As you spend more time in the Rift, it will start to decay around you.
+rift_page.enderrifts:rift_decay_0_2.name=I don't recommend spending too much time in the Rift.

@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "contents=empty":            { "model": "flower_pot" },
+        "contents=rift_flower":      { "model": "enderrifts:flower_pot_rift_flower" }
+    }
+}
