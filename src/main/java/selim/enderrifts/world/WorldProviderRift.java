@@ -25,7 +25,7 @@ import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
-import selim.enderrifts.RiftsRegistry;
+import selim.enderrifts.RiftRegistry;
 import selim.enderrifts.api.RiftGenerator;
 
 public class WorldProviderRift extends WorldProvider {
@@ -37,7 +37,7 @@ public class WorldProviderRift extends WorldProvider {
 	@Override
 	protected void init() {
 		super.init();
-		this.biomeProvider = new BiomeProviderSingle(RiftsRegistry.riftBiome);
+		this.biomeProvider = new BiomeProviderSingle(RiftRegistry.riftBiome);
 	}
 
 	@Override

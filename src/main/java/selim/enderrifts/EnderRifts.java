@@ -1,5 +1,6 @@
 package selim.enderrifts;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,7 +9,6 @@ import net.minecraft.world.DimensionType;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -25,7 +25,7 @@ import selim.enderrifts.riftgenerators.DefaultRiftGenerator;
 		dependencies = ModInfo.DEPENDENCIES)
 public class EnderRifts {
 
-	@Instance(value = ModInfo.ID)
+	@Mod.Instance(value = ModInfo.ID)
 	public static EnderRifts instance;
 	@SidedProxy(clientSide = ModInfo.PROXY_CLIENT, serverSide = ModInfo.PROXY_SERVER)
 	public static CommonProxy proxy;
@@ -38,8 +38,8 @@ public class EnderRifts {
 
 	static {
 		if (!FluidRegistry.isUniversalBucketEnabled()) {
-			System.out.println("Forge Universal Bucket is not enabled.");
-			System.out.println("Now enabling the Forge Universal Bucket.");
+			LOGGER.log(Level.INFO, "Forge Universal Bucket is not enabled.");
+			LOGGER.log(Level.INFO, "Now enabling the Forge Universal Bucket.");
 			FluidRegistry.enableUniversalBucket();
 		}
 	}
@@ -54,7 +54,7 @@ public class EnderRifts {
 		// RiftsRegistry.registerEnchantments();
 		// RiftsRegistry.registerEntities();
 		// RiftsRegistry.registerPotions();
-		RiftsRegistry.registerDimensions();
+		RiftRegistry.registerDimensions();
 
 		proxy.preInit();
 	}
@@ -62,19 +62,19 @@ public class EnderRifts {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		// Register event handlers
-		RiftsRegistry.registerEventHandlers();
+		RiftRegistry.registerEventHandlers();
 
 		// Register custom dispenser behavior
-		RiftsRegistry.registerDispenserBehavior();
+		RiftRegistry.registerDispenserBehavior();
 
 		// Register recipes
 		// MyRecipies.addRecipies();
 
 		// Register world generators
-		RiftsRegistry.registerWorldGenerators();
+		RiftRegistry.registerWorldGenerators();
 
 		// Register gui handlers
-		RiftsRegistry.registerGuiHandlers();
+		RiftRegistry.registerGuiHandlers();
 
 		proxy.init();
 	}

@@ -8,14 +8,16 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
-import selim.enderrifts.RiftsRegistry;
+import selim.enderrifts.RiftRegistry;
+import selim.enderrifts.api.docs.IDocEntryLink;
 
-public class BlockAmethystOre extends Block {
+public class BlockAmethystOre extends Block implements IDocEntryLink {
 
 	private static final Random rand = new Random();
 
@@ -28,19 +30,24 @@ public class BlockAmethystOre extends Block {
 	}
 
 	@Override
+	public ResourceLocation getLinkedEntry() {
+		return new ResourceLocation(ModInfo.ID, "amethyst");
+	}
+
+	@Override
 	public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
 		return fortune * rand.nextInt(20) + 10;
 	}
 
 	@Override
 	protected ItemStack getSilkTouchDrop(IBlockState state) {
-		return new ItemStack(RiftsRegistry.Blocks.AMETHYST_ORE);
+		return new ItemStack(RiftRegistry.Blocks.AMETHYST_ORE);
 	}
 
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos,
 			IBlockState state, int fortune) {
-		drops.add(new ItemStack(RiftsRegistry.Items.AMETHYST,
+		drops.add(new ItemStack(RiftRegistry.Items.AMETHYST,
 				(fortune * rand.nextInt(3)) + (rand.nextInt(3) + 1)));
 	}
 

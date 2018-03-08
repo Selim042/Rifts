@@ -28,8 +28,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
+import selim.enderrifts.api.docs.IDocEntryLink;
 
-public class BlockAmethystTorch extends BlockNegativeLight {
+public class BlockAmethystTorch extends BlockNegativeLight implements IDocEntryLink {
 
 	private static final int RANGE = 2;
 	private static final int OPACITY = 4;
@@ -44,6 +45,11 @@ public class BlockAmethystTorch extends BlockNegativeLight {
 		// Coppied from BlockTorch
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
 		this.setTickRandomly(true);
+	}
+
+	@Override
+	public ResourceLocation getLinkedEntry() {
+		return new ResourceLocation(ModInfo.ID, "amethyst");
 	}
 
 	// Coppied from BlockTorch

@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "opacity=0":   { "model": "cube_all" },
+        "opacity=1":   { "model": "cube_all" },
+        "opacity=2":   { "model": "cube_all" },
+        "opacity=3":   { "model": "cube_all" },
+        "opacity=4":   { "model": "cube_all" },
+        "opacity=5":   { "model": "cube_all" },
+        "opacity=6":   { "model": "cube_all" },
+        "opacity=7":   { "model": "cube_all" },
+        "opacity=8":   { "model": "cube_all" },
+        "opacity=9":   { "model": "cube_all" },
+        "opacity=10":  { "model": "cube_all" },
+        "opacity=11":  { "model": "cube_all" },
+        "opacity=12":  { "model": "cube_all" },
+        "opacity=13":  { "model": "cube_all" },
+        "opacity=14":  { "model": "cube_all" },
+        "opacity=15":  { "model": "cube_all" }
+    }
+}

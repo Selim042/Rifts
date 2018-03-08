@@ -24,26 +24,22 @@ public class AmethystTooltip {
 	@SubscribeEvent
 	public void tooltipText(ItemTooltipEvent event) {
 		ItemStack stack = event.getItemStack();
+		// List<String> nbtStrings = new LinkedList<String>();
+		// NBTUtils.nbtToStringList(nbtStrings, stack.getTagCompound());
+		// event.getToolTip().addAll(nbtStrings);
 		for (int oreId : OreDictionary.getOreIDs(stack))
 			event.getToolTip().add(" - " + OreDictionary.getOreName(oreId));
 		if (!isInfused(stack))
 			return;
 		event.getToolTip()
-				.add(ChatFormatting.DARK_PURPLE.toString() + ChatFormatting.ITALIC + "Ametyst Infused");
-		// List<String> nbtStrings = new LinkedList<String>();
-		// NBTUtils.nbtToStringList(nbtStrings, stack.getTagCompound());
-		// event.getToolTip().addAll(nbtStrings);
+				.add(ChatFormatting.DARK_PURPLE.toString() + ChatFormatting.ITALIC + "Amethyst Infused");
 	}
 
 	private boolean isInfused(ItemStack stack) {
 		if (stack == null || stack.isEmpty())
 			return false;
 		NBTTagCompound nbt = stack.getTagCompound();
-		if (nbt == null)
-			return false;
-		if (nbt.hasKey("amethystInfused") && nbt.getBoolean("amethystInfused"))
-			return true;
-		return false;
+		return nbt == null ? false : nbt.getBoolean("amethystInfused");
 	}
 
 }

@@ -15,12 +15,20 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
+import selim.enderrifts.api.docs.DocCategory;
+import selim.enderrifts.api.docs.DocPage;
+import selim.enderrifts.api.docs.IDocEntryResource;
+import selim.enderrifts.api.docs.pages.DocPageCraftingRecipe;
+import selim.enderrifts.api.docs.pages.DocPageText;
+import selim.enderrifts.proxy.ClientProxy;
 import selim.enderrifts.utils.MiscUtils;
 import selim.enderrifts.utils.MiscUtils.EnumHoliday;
 
-public class BlockBarite extends Block {
+public class BlockBarite extends Block implements IDocEntryResource {
 
 	public static final PropertyEnum<EnumType> TYPE = PropertyEnum.create("type", EnumType.class);
 
@@ -35,6 +43,48 @@ public class BlockBarite extends Block {
 		this.setCreativeTab(EnderRifts.mainTab);
 		this.setHardness(1.5f);
 	}
+
+	// Start DocEntryResource
+	@SideOnly(Side.CLIENT)
+	@Override
+	public ResourceLocation getEntryRegistryName() {
+		return new ResourceLocation(ModInfo.ID, "barite");
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public String getEntryUnlocalizedName() {
+		return ModInfo.ID + ":barite";
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public DocCategory getEntryCategory() {
+		return ClientProxy.Categories.RIFT_OVERWORLD;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public DocPage[] getEntryPages() {
+		DocPage[] pages = new DocPage[3];
+		pages[0] = new DocPageText(ModInfo.ID + ":barite_0_0", ModInfo.ID + ":barite_0_1");
+		pages[1] = new DocPageCraftingRecipe(new ResourceLocation("enderrifts", "barite_smooth"));
+		pages[2] = new DocPageCraftingRecipe(new ResourceLocation("enderrifts", "barite_bricks"));
+		return pages;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public ItemStack getEntryIcon() {
+		return new ItemStack(this);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public ResourceLocation getLinkedEntry() {
+		return this.getEntryRegistryName();
+	}
+	// End DocEntryResource
 
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {

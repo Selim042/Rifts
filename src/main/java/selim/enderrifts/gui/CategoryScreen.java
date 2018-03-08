@@ -3,6 +3,8 @@ package selim.enderrifts.gui;
 import java.io.IOException;
 import java.util.List;
 
+import org.lwjgl.input.Mouse;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraftforge.fml.relauncher.Side;
@@ -95,6 +97,37 @@ public class CategoryScreen extends MainScreen {
 					.displayGuiScreen(new CategoryScreen(this.cat, this.back, pageNum + 1));
 			break;
 		}
+	}
+
+	@Override
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		super.mouseClicked(mouseX, mouseY, mouseButton);
+		if (mouseButton == 1 && this.back != null) // right click
+			Minecraft.getMinecraft().displayGuiScreen(this.back);
+	}
+
+	private static final int scrollMax = 93;
+	private int scrollPos = 0; // up to 93
+
+	@Override
+	public void handleMouseInput() throws IOException {
+		super.handleMouseInput();
+		int wheelState = Mouse.getEventDWheel();
+		if (wheelState != 0) {
+//			if (wheelState > 0)
+//				this.pageNum++;
+//			else if (wheelState < 0)
+//				this.pageNum--;
+			scrollPos += wheelState > 0 ? -8 : 8;
+			handleScrollPos();
+		}
+	}
+
+	private void handleScrollPos() {
+		if (scrollPos < 0)
+			scrollPos = 0;
+		else if (scrollPos > scrollMax)
+			scrollPos = scrollMax;
 	}
 
 	@Override

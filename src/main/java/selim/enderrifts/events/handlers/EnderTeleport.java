@@ -8,7 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import selim.enderrifts.RiftsRegistry;
+import selim.enderrifts.RiftRegistry;
 import selim.enderrifts.events.EnhancedEnderTeleportEvent;
 
 public class EnderTeleport {
@@ -22,7 +22,7 @@ public class EnderTeleport {
 			Entity entity = event.getEntity();
 			World world = entity.getEntityWorld();
 			world.setBlockState(new BlockPos(event.getTargetX(), event.getTargetY(), event.getTargetZ()),
-					RiftsRegistry.Blocks.RIFT_TEST.getDefaultState());
+					RiftRegistry.Blocks.RIFT_TEST.getDefaultState());
 		}
 	}
 

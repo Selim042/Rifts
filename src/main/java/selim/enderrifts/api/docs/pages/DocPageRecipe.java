@@ -1,8 +1,11 @@
 package selim.enderrifts.api.docs.pages;
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import selim.enderrifts.api.docs.DocPage;
 import selim.enderrifts.api.docs.IGuiInfo;
 
+@SideOnly(Side.CLIENT)
 public class DocPageRecipe extends DocPage {
 
 	@Override

@@ -14,14 +14,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.registries.IForgeRegistry;
+import selim.enderrifts.RiftRegistry;
 import selim.enderrifts.crafting.CrushRecipe;
 
 public class CrushRecipeHandler {
-
-	private static final IForgeRegistry<CrushRecipe> RECIPES = GameRegistry
-			.findRegistry(CrushRecipe.class);
 
 	@SubscribeEvent
 	public void onAnvilLand(NeighborNotifyEvent event) {
@@ -35,7 +31,7 @@ public class CrushRecipeHandler {
 					new AxisAlignedBB(pos));
 			HashMap<CrushRecipe, EntityItem> toCraft = new HashMap<CrushRecipe, EntityItem>();
 			for (EntityItem item : items)
-				for (CrushRecipe e : RECIPES.getValuesCollection())
+				for (CrushRecipe e : RiftRegistry.Registries.CRUSH_RECIPES.getValuesCollection())
 					if (e.isInputValid(item.getItem()))
 						toCraft.put(e, item);
 			List<ItemStack> toSpawn = new LinkedList<ItemStack>();

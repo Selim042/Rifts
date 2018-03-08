@@ -1,6 +1,7 @@
 package selim.enderrifts.proxy;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -18,7 +19,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import selim.enderrifts.ModInfo;
-import selim.enderrifts.RiftsRegistry;
+import selim.enderrifts.RiftRegistry;
 import selim.enderrifts.api.RiftGenerator;
 import selim.enderrifts.blocks.BlockAmethystBlock;
 import selim.enderrifts.blocks.BlockAmethystOre;
@@ -32,7 +33,6 @@ import selim.enderrifts.blocks.BlockRift;
 import selim.enderrifts.blocks.BlockRiftFlower;
 import selim.enderrifts.blocks.BlockRiftSand;
 import selim.enderrifts.blocks.BlockTeleporter;
-import selim.enderrifts.blocks.TileTeleporter;
 import selim.enderrifts.crafting.CrushRecipe;
 import selim.enderrifts.crafting.SpecificCrushRecipe;
 import selim.enderrifts.entities.EntityPhantomPearl;
@@ -42,6 +42,7 @@ import selim.enderrifts.items.ItemBlockFlower;
 import selim.enderrifts.items.ItemBlockMeta;
 import selim.enderrifts.items.ItemDebugItem;
 import selim.enderrifts.items.ItemEnderLink;
+import selim.enderrifts.items.ItemFracturedPearl;
 import selim.enderrifts.items.ItemOpal;
 import selim.enderrifts.items.ItemPhantomPearl;
 import selim.enderrifts.items.ItemRiftEye;
@@ -49,6 +50,8 @@ import selim.enderrifts.items.ItemRiftTransportNode;
 import selim.enderrifts.items.ItemUniversalDye;
 import selim.enderrifts.riftgenerators.RiftGeneratorNether;
 import selim.enderrifts.riftgenerators.RiftGeneratorOverworld;
+import selim.enderrifts.tiles.TileRiftPortal;
+import selim.enderrifts.tiles.TileTeleporter;
 import selim.enderrifts.utils.MiscUtils;
 
 @Mod.EventBusSubscriber
@@ -56,14 +59,16 @@ public class CommonProxy {
 
 	@SubscribeEvent
 	public static void registerCommonRegistries(RegistryEvent.NewRegistry event) {
-		new RegistryBuilder<RiftGenerator>().setType(RiftGenerator.class)
+		RiftRegistry.Registries.RIFT_GENERATORS = new RegistryBuilder<RiftGenerator>()
+				.setType(RiftGenerator.class)
 				.setName(new ResourceLocation(ModInfo.ID, "rift_generators")).create();
-		new RegistryBuilder<CrushRecipe>().setType(CrushRecipe.class)
-				.setName(new ResourceLocation(ModInfo.ID, "crush_recipe")).create();
+		RiftRegistry.Registries.CRUSH_RECIPES = new RegistryBuilder<CrushRecipe>()
+				.setType(CrushRecipe.class).setName(new ResourceLocation(ModInfo.ID, "crush_recipe"))
+				.create();
 	}
 
 	@SubscribeEvent
-	public static void registrRiftGenerators(RegistryEvent.Register<RiftGenerator> event) {
+	public static void registerRiftGenerators(RegistryEvent.Register<RiftGenerator> event) {
 		event.getRegistry().register(new RiftGeneratorOverworld());
 		event.getRegistry().register(new RiftGeneratorNether());
 	}
@@ -71,19 +76,16 @@ public class CommonProxy {
 	@SubscribeEvent
 	public static void registerCrushRecipes(RegistryEvent.Register<CrushRecipe> event) {
 		event.getRegistry()
-				.register(new SpecificCrushRecipe(new ItemStack(RiftsRegistry.Items.AMETHYST, 9),
-						new ItemStack(RiftsRegistry.Items.AMETHYST_BLOCK))
-								.setRegistryName(new ResourceLocation(ModInfo.ID, "test")));
-		event.getRegistry()
-				.register(new SpecificCrushRecipe(new ItemStack(RiftsRegistry.Items.AMETHYST, 1),
-						new ItemStack(RiftsRegistry.Items.OPAL, 2))
-								.setRegistryName(new ResourceLocation(ModInfo.ID, "test2")));
+				.register(new SpecificCrushRecipe(new ItemStack(RiftRegistry.Items.FRACTURED_PEARL),
+						new ItemStack(Items.ENDER_PEARL))
+								.setRegistryName(new ResourceLocation(ModInfo.ID, "fractured_pearl")));
 	}
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		IForgeRegistry<Block> reg = event.getRegistry();
 		reg.register(new BlockRift());
+		GameRegistry.registerTileEntity(TileRiftPortal.class, ModInfo.ID + ":rift_portal");
 		reg.register(new BlockRiftFlower());
 		reg.register(new BlockRiftSand());
 		reg.register(new BlockOpaqueAir());
@@ -97,6 +99,7 @@ public class CommonProxy {
 		reg.register(opalOre);
 		reg.register(new BlockBarite());
 		reg.register(new BlockTeleporter());
+		GameRegistry.registerTileEntity(TileTeleporter.class, ModInfo.ID + ":teleporter");
 
 		OreDictionary.registerOre("riftOre", amethystOre);
 		OreDictionary.registerOre("riftOre", opalOre);
@@ -109,18 +112,17 @@ public class CommonProxy {
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		IForgeRegistry<Item> reg = event.getRegistry();
-		registerItemBlock(reg, RiftsRegistry.Blocks.RIFT_TEST);
-		event.getRegistry().register(new ItemBlockFlower(RiftsRegistry.Blocks.RIFT_FLOWER)
-				.setRegistryName(RiftsRegistry.Blocks.RIFT_FLOWER.getRegistryName()));
-		registerItemBlock(reg, RiftsRegistry.Blocks.RIFT_SAND);
-		registerItemBlock(reg, RiftsRegistry.Blocks.AMETHYST_BLOCK);
-		registerItemBlock(reg, RiftsRegistry.Blocks.AMETHYST_TORCH);
-		OreDictionary.registerOre("riftOre", registerItemBlock(reg, RiftsRegistry.Blocks.AMETHYST_ORE));
-		registerItemBlock(reg, RiftsRegistry.Blocks.OPAL_BLOCK);
-		OreDictionary.registerOre("riftOre", registerItemBlock(reg, RiftsRegistry.Blocks.OPAL_ORE));
-		registerItemBlockMeta(reg, RiftsRegistry.Blocks.BARITE);
-		registerItemBlock(reg, RiftsRegistry.Blocks.TELEPORTER);
-		GameRegistry.registerTileEntity(TileTeleporter.class, ModInfo.ID + ":teleporter");
+		registerItemBlock(reg, RiftRegistry.Blocks.RIFT_TEST);
+		event.getRegistry().register(new ItemBlockFlower(RiftRegistry.Blocks.RIFT_FLOWER)
+				.setRegistryName(RiftRegistry.Blocks.RIFT_FLOWER.getRegistryName()));
+		registerItemBlock(reg, RiftRegistry.Blocks.RIFT_SAND);
+		registerItemBlock(reg, RiftRegistry.Blocks.AMETHYST_BLOCK);
+		registerItemBlock(reg, RiftRegistry.Blocks.AMETHYST_TORCH);
+		OreDictionary.registerOre("riftOre", registerItemBlock(reg, RiftRegistry.Blocks.AMETHYST_ORE));
+		registerItemBlock(reg, RiftRegistry.Blocks.OPAL_BLOCK);
+		OreDictionary.registerOre("riftOre", registerItemBlock(reg, RiftRegistry.Blocks.OPAL_ORE));
+		registerItemBlockMeta(reg, RiftRegistry.Blocks.BARITE);
+		registerItemBlock(reg, RiftRegistry.Blocks.TELEPORTER);
 
 		ItemUniversalDye universalDye = new ItemUniversalDye();
 		reg.register(universalDye);
@@ -135,12 +137,11 @@ public class CommonProxy {
 		// reg.register(new ItemRiftAccess());
 		reg.register(new ItemEnderLink());
 		reg.register(new ItemRiftEye());
-
-		// for (String ore : OreDictionary.getOreNames())
-		// EnderRifts.LOGGER.info("ore: " + ore);
+		reg.register(new ItemFracturedPearl());
 
 		for (EnumDyeColor color : EnumDyeColor.values()) {
 			String name = color.getUnlocalizedName();
+			OreDictionary.registerOre("dye", new ItemStack(universalDye));
 			OreDictionary.registerOre("dye" + name.substring(0, 1).toUpperCase() + name.substring(1),
 					new ItemStack(universalDye, 1, color.getDyeDamage()));
 		}
@@ -167,7 +168,7 @@ public class CommonProxy {
 
 	@SubscribeEvent
 	public void registerBiome(RegistryEvent.Register<Biome> event) {
-		event.getRegistry().register(RiftsRegistry.riftBiome);
+		event.getRegistry().register(RiftRegistry.riftBiome);
 	}
 
 	@SubscribeEvent

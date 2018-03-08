@@ -7,7 +7,7 @@ item.enderrifts:universal_dye_yellow.name=Yellow Universal Dye
 item.enderrifts:universal_dye_lime.name=Lime Universal Dye
 item.enderrifts:universal_dye_pink.name=Pink Universal Dye
 item.enderrifts:universal_dye_gray.name=Gray Universal Dye
-item.enderrifts:universal_dye_silver.name=Silver Universal Dye
+item.enderrifts:universal_dye_silver.name=Light Gray Universal Dye
 item.enderrifts:universal_dye_cyan.name=Cyan Universal Dye
 item.enderrifts:universal_dye_purple.name=Purple Universal Dye
 item.enderrifts:universal_dye_blue.name=Blue Universal Dye
@@ -15,12 +15,14 @@ item.enderrifts:universal_dye_brown.name=Brown Universal Dye
 item.enderrifts:universal_dye_green.name=Green Universal Dye
 item.enderrifts:universal_dye_red.name=Red Universal Dye
 item.enderrifts:universal_dye_black.name=Black Universal Dye
+item.enderrifts:universal_dye_unstable.name=Unstable Universal Dye
 item.enderrifts:amethyst.name=Amethyst
 item.enderrifts:opal.name=Opal
 item.enderrifts:phantom_pearl.name=Phantom Pearl
 item.enderrifts:rift_transport_node.name=Rift Transport Node
 item.enderrifts:ender_link.name=Ender Link
 item.enderrifts:rift_eye.name=Rift's Eye
+item.enderrifts:fractured_pearl.name=Fractured Pearl
 
 tile.enderrifts:rift_flower.name=Rift Flower
 tile.enderrifts:amethyst_block.name=Amethyst Block
@@ -39,12 +41,18 @@ tile.enderrifts:barite_april_fools_brick.name=Baconite Bricks
 
 itemGroup.enderrifts:main=Ender Rifts
 
+misc.enderrifts:hold_ctrl=Hold Ctrl
+
 rift_category.enderrifts:primary_category.name=The Rift
 rift_category.enderrifts:rift_overworld.name=Overworld
 
 rift_entry.enderrifts:the_rift.name=The Rift Basics
 rift_entry.enderrifts:rift_decay.name=Rift Decay
 rift_entry.enderrifts:barite.name=Barite
+rift_entry.enderrifts:amethyst.name=Amethyst
+rift_entry.enderrifts:opal.name=Opal
+rift_entry.enderrifts:rift_flower.name=Rift Flower
+rift_entry.enderrifts:nether_rift.name=The Nether Rift
 
 rift_page.enderrifts:rift_basics_0_0.name=The Rift fills the void between dimensions where distance is meaningless.
 rift_page.enderrifts:rift_basics_0_1.name=Various creatures use it to travel long distances very quickly, even between worlds.
@@ -54,3 +62,10 @@ rift_page.enderrifts:rift_basics_1_1.name=But beware, the Rift is quite dangerou
 rift_page.enderrifts:rift_decay_0_0.name=If you haven't yet noticed, things aren't exactly the same in the Rift.  Some blocks are missing, some are completely different.
 rift_page.enderrifts:rift_decay_0_1.name=As you spend more time in the Rift, it will start to decay around you.
 rift_page.enderrifts:rift_decay_0_2.name=I don't recommend spending too much time in the Rift.
+rift_page.enderrifts:amethyst_0_0.name=Amethyst is a very unique material.  It seems to attract ambient light, resulting in a darker area around it.
+rift_page.enderrifts:amethyst_0_1.name=Using it you can create a full block that removes light from a larger region around it, or a simple torch that affects a smaller area.
+rift_page.enderrifts:barite_0_0.name=Barite is just another relatively not very unique purple stone variant that only seems to spawn in the rift near the Overworld.
+rift_page.enderrifts:barite_0_1.name=It can be crafted into smooth and brick variants.
+rift_page.enderrifts:rift_flower_0_0.name=The strange flowers found in the Overworld rift seem to produce an unstable dye that could possibly be used as any other dye.
+rift_page.enderrifts:rift_flower_0_1.name=You may need to stabilize it with a sample of a stable dye, but then it can be used as many times as you would like.
+rift_page.enderrifts:nether_rift_0_0.name=Whereas the Nether is generally hostile environment full of hazards, the Rift from the Nether is relatively docile.

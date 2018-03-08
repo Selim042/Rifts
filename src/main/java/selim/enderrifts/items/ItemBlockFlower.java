@@ -12,7 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import selim.enderrifts.RiftsRegistry;
+import selim.enderrifts.RiftRegistry;
 import selim.enderrifts.blocks.BlockCustomFlowerPot;
 
 public class ItemBlockFlower extends ItemBlock {
@@ -28,7 +28,7 @@ public class ItemBlockFlower extends ItemBlock {
 		IBlockState hitBlock = worldIn.getBlockState(pos);
 		if (hitBlock != null && !(hitBlock instanceof BlockAir)
 				&& hitBlock.getBlock() instanceof BlockFlowerPot) {
-			IBlockState pot = RiftsRegistry.Blocks.FLOWER_POT.getDefaultState();
+			IBlockState pot = RiftRegistry.Blocks.FLOWER_POT.getDefaultState();
 			ItemStack stack = player.getHeldItem(hand);
 			BlockCustomFlowerPot.EnumFlowerType type = BlockCustomFlowerPot.EnumFlowerType
 					.valueOfItem(stack);

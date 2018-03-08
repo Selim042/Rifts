@@ -3,7 +3,7 @@ package selim.enderrifts.creativetabs;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import selim.enderrifts.ModInfo;
-import selim.enderrifts.RiftsRegistry;
+import selim.enderrifts.RiftRegistry;
 
 public class RiftMainTab extends CreativeTabs {
 
@@ -13,7 +13,7 @@ public class RiftMainTab extends CreativeTabs {
 
 	@Override
 	public ItemStack getTabIconItem() {
-		return new ItemStack(RiftsRegistry.Items.RIFT_EYE);
+		return new ItemStack(RiftRegistry.Items.RIFT_EYE);
 	}
 
 }

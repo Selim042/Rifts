@@ -4,7 +4,10 @@ import net.minecraft.item.ItemBlock;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 import selim.enderrifts.api.RiftGenerator;
+import selim.enderrifts.api.docs.DocCategory;
+import selim.enderrifts.api.docs.DocEntry;
 import selim.enderrifts.blocks.BlockAmethystBlock;
 import selim.enderrifts.blocks.BlockAmethystOre;
 import selim.enderrifts.blocks.BlockAmethystTorch;
@@ -17,9 +20,11 @@ import selim.enderrifts.blocks.BlockRift;
 import selim.enderrifts.blocks.BlockRiftFlower;
 import selim.enderrifts.blocks.BlockRiftSand;
 import selim.enderrifts.blocks.BlockTeleporter;
+import selim.enderrifts.crafting.CrushRecipe;
 import selim.enderrifts.events.handlers.AmethystTooltip;
 import selim.enderrifts.events.handlers.CrushRecipeHandler;
 import selim.enderrifts.events.handlers.EnderTeleport;
+import selim.enderrifts.events.handlers.EyeTooltipHandler;
 import selim.enderrifts.events.handlers.FogDensity;
 import selim.enderrifts.events.handlers.PlayerRenderEvent;
 import selim.enderrifts.events.handlers.PurpleTint;
@@ -28,6 +33,7 @@ import selim.enderrifts.gui.GuiHandler;
 import selim.enderrifts.items.ItemAmethyst;
 import selim.enderrifts.items.ItemDebugItem;
 import selim.enderrifts.items.ItemEnderLink;
+import selim.enderrifts.items.ItemFracturedPearl;
 import selim.enderrifts.items.ItemOpal;
 import selim.enderrifts.items.ItemPhantomPearl;
 import selim.enderrifts.items.ItemRiftAccess;
@@ -37,7 +43,14 @@ import selim.enderrifts.items.ItemUniversalDye;
 import selim.enderrifts.world.BiomeRift;
 import selim.enderrifts.world.DimensionRift;
 
-public class RiftsRegistry {
+public class RiftRegistry {
+
+	public static class Registries {
+
+		public static IForgeRegistry<RiftGenerator> RIFT_GENERATORS;
+		public static IForgeRegistry<CrushRecipe> CRUSH_RECIPES;
+
+	}
 
 	@GameRegistry.ObjectHolder("enderrifts")
 	public static class RiftProviders {
@@ -91,6 +104,7 @@ public class RiftsRegistry {
 		public static final ItemEnderLink ENDER_RIFT = null;
 		public static final ItemRiftAccess RIFT_ACCESS = null;
 		public static final ItemRiftEye RIFT_EYE = null;
+		public static final ItemFracturedPearl FRACTURED_PEARL = null;
 
 		public static final ItemDebugItem DEBUG_ITEM = null;
 
@@ -111,9 +125,12 @@ public class RiftsRegistry {
 		MinecraftForge.EVENT_BUS.register(new ShaderHandler());
 		MinecraftForge.EVENT_BUS.register(new AmethystTooltip());
 		MinecraftForge.EVENT_BUS.register(new PlayerRenderEvent());
-		if (RiftsRegistry.Items.RIFT_TRANSPORT_NODE != null)
-			MinecraftForge.EVENT_BUS.register(RiftsRegistry.Items.RIFT_TRANSPORT_NODE);
+		if (RiftRegistry.Items.RIFT_TRANSPORT_NODE != null)
+			MinecraftForge.EVENT_BUS.register(RiftRegistry.Items.RIFT_TRANSPORT_NODE);
 		MinecraftForge.EVENT_BUS.register(new CrushRecipeHandler());
+		// Laggy
+		// MinecraftForge.EVENT_BUS.register(new WaterEffectHandler());
+		MinecraftForge.EVENT_BUS.register(new EyeTooltipHandler());
 	}
 
 	public static void registerDispenserBehavior() {}

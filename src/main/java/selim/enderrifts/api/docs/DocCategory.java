@@ -6,8 +6,11 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.DimensionType;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+@SideOnly(Side.CLIENT)
 @SuppressWarnings("deprecation")
 public class DocCategory extends IForgeRegistryEntry.Impl<DocCategory>
 		implements Comparable<DocCategory> {

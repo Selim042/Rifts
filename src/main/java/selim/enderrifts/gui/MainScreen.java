@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.lwjgl.input.Mouse;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.registries.IForgeRegistry;
 import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
 import selim.enderrifts.api.docs.DocCategory;
@@ -20,12 +20,11 @@ import selim.enderrifts.gui.buttons.BackButton;
 import selim.enderrifts.gui.buttons.CategoryButton;
 import selim.enderrifts.gui.buttons.PageButton;
 import selim.enderrifts.gui.buttons.PageButton.EnumPageButton;
+import selim.enderrifts.proxy.ClientProxy;
 
 @SideOnly(Side.CLIENT)
 public class MainScreen extends GuiScreen {
 
-	private static final IForgeRegistry<DocCategory> CATEGORIES = GameRegistry
-			.findRegistry(DocCategory.class);
 	private static final ResourceLocation BACKGROUND = new ResourceLocation(ModInfo.ID,
 			"textures/items/rift_eye.png");
 	protected static final int docPerPage = 9;
@@ -135,6 +134,36 @@ public class MainScreen extends GuiScreen {
 	}
 
 	@Override
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		super.mouseClicked(mouseX, mouseY, mouseButton);
+		if (mouseButton == 1) {} // right click -- nothing to go back to
+	}
+
+	private static final int scrollMax = 93;
+	private int scrollPos = 0; // up to 93
+
+	@Override
+	public void handleMouseInput() throws IOException {
+		super.handleMouseInput();
+		int wheelState = Mouse.getEventDWheel();
+		if (wheelState != 0) {
+			// if (wheelState > 0)
+			// this.pageNum++;
+			// else if (wheelState < 0)
+			// this.pageNum--;
+			scrollPos += wheelState > 0 ? -8 : 8;
+			handleScrollPos();
+		}
+	}
+
+	private void handleScrollPos() {
+		if (scrollPos < 0)
+			scrollPos = 0;
+		else if (scrollPos > scrollMax)
+			scrollPos = scrollMax;
+	}
+
+	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
 		if (button.enabled && button.isMouseOver() && button instanceof PageButton) {
 			switch (((PageButton) button).getButtonType()) {
@@ -164,7 +193,8 @@ public class MainScreen extends GuiScreen {
 	}
 
 	private void reloadCategories() {
-		this.allCats = new LinkedList<DocCategory>(CATEGORIES.getValues());
+		this.allCats = new LinkedList<DocCategory>(
+				ClientProxy.Registries.DOC_CATEGORIES.getValuesCollection());
 		this.displayCats = new LinkedList<DocCategory>();
 		for (DocCategory cat : allCats)
 			if (cat.getRequriedDim() == null

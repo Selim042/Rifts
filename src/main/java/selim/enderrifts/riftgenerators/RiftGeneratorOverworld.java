@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import selim.enderrifts.ModInfo;
-import selim.enderrifts.RiftsRegistry;
+import selim.enderrifts.RiftRegistry;
 
 public class RiftGeneratorOverworld extends DefaultRiftGenerator {
 
@@ -28,21 +28,21 @@ public class RiftGeneratorOverworld extends DefaultRiftGenerator {
 		IBlockState state = oldWorld.getBlockState(pos);
 		Block block = state.getBlock();
 		if (baseState.getBlock().canSustainPlant(baseState, newWorld, pos, EnumFacing.UP,
-				RiftsRegistry.Blocks.RIFT_FLOWER)
+				RiftRegistry.Blocks.RIFT_FLOWER)
 				&& (state.getMaterial().equals(Material.PLANTS) || state.getBlock() instanceof BlockBush)
 				&& newWorld.rand.nextInt(16) == 1) {
-			newWorld.setBlockState(pos, RiftsRegistry.Blocks.RIFT_FLOWER.getDefaultState());
+			newWorld.setBlockState(pos, RiftRegistry.Blocks.RIFT_FLOWER.getDefaultState());
 			return true;
 		}
 		if (newWorld.rand.nextInt(8) == 1 && (block instanceof BlockOre
 				|| block.getRegistryName().getResourcePath().contains("ore"))) {
 			newWorld.setBlockState(pos,
-					newWorld.rand.nextBoolean() ? RiftsRegistry.Blocks.AMETHYST_ORE.getDefaultState()
-							: RiftsRegistry.Blocks.OPAL_ORE.getDefaultState());
+					newWorld.rand.nextBoolean() ? RiftRegistry.Blocks.AMETHYST_ORE.getDefaultState()
+							: RiftRegistry.Blocks.OPAL_ORE.getDefaultState());
 			return true;
 		}
 		if (block.equals(Blocks.STONE) && !state.getValue(BlockStone.VARIANT).equals(BlockStone.EnumType.STONE)) {
-			newWorld.setBlockState(pos, RiftsRegistry.Blocks.BARITE.getDefaultState());
+			newWorld.setBlockState(pos, RiftRegistry.Blocks.BARITE.getDefaultState());
 			return true;
 		}
 		return false;

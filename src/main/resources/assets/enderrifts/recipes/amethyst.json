@@ -1,0 +1,12 @@
+{
+	"type": "forge:ore_shapeless",
+	"ingredients": [
+		{
+			"item": "enderrifts:amethyst_block"
+		}
+	],
+	"result": {
+		"item": "enderrifts:amethyst",
+		"count": 9
+	}
+}

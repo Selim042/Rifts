@@ -18,17 +18,24 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
+import selim.enderrifts.api.docs.DocCategory;
+import selim.enderrifts.api.docs.DocPage;
+import selim.enderrifts.api.docs.IDocEntryResource;
+import selim.enderrifts.api.docs.pages.DocPageText;
 import selim.enderrifts.compat.BaublesHelper;
 import selim.enderrifts.misc.WorldBlockPos;
+import selim.enderrifts.proxy.ClientProxy;
 import selim.enderrifts.utils.NBTUtils;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = BaublesHelper.ID)
-public class ItemRiftTransportNode extends ItemBound implements IBauble {
+public class ItemRiftTransportNode extends ItemBound implements IDocEntryResource, IBauble {
 
 	public ItemRiftTransportNode() {
 		this.setRegistryName(new ResourceLocation(ModInfo.ID, "rift_transport_node"));
@@ -36,6 +43,46 @@ public class ItemRiftTransportNode extends ItemBound implements IBauble {
 		this.setCreativeTab(EnderRifts.mainTab);
 		this.maxStackSize = 1;
 	}
+
+	// Start DocEntryResource
+	@SideOnly(Side.CLIENT)
+	@Override
+	public ResourceLocation getEntryRegistryName() {
+		return new ResourceLocation(ModInfo.ID, "rift_transport_node");
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public String getEntryUnlocalizedName() {
+		return ModInfo.ID + ":rift_transport_node";
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public DocCategory getEntryCategory() {
+		return ClientProxy.Categories.RIFT_END;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public DocPage[] getEntryPages() {
+		DocPage[] pages = new DocPage[1];
+		pages[0] = new DocPageText("rift_transport_node_0");
+		return pages;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public ItemStack getEntryIcon() {
+		return new ItemStack(this);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public ResourceLocation getLinkedEntry() {
+		return this.getEntryRegistryName();
+	}
+	// End DocEntryResource
 
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flagIn) {

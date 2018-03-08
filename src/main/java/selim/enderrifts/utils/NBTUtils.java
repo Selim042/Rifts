@@ -70,6 +70,8 @@ public class NBTUtils {
 
 	private static void addNBTKey(List<String> output, final NBTTagCompound nbt, final String indent,
 			final String key) {
+		if (nbt == null)
+			return;
 		switch (getKeyType(nbt, key)) {
 		case "END":
 			break;
@@ -189,6 +191,8 @@ public class NBTUtils {
 
 	public static void nbtToStringList(List<String> output, final NBTTagCompound nbt,
 			final String indent, final String name) {
+		if (nbt == null)
+			return;
 		if (name != null && !name.equals(""))
 			output.add(indent + name + ": {");
 		else

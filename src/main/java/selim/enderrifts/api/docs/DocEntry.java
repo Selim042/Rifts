@@ -5,8 +5,11 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+@SideOnly(Side.CLIENT)
 @SuppressWarnings("deprecation")
 public class DocEntry extends IForgeRegistryEntry.Impl<DocEntry> implements Comparable<DocEntry> {
 
@@ -21,7 +24,17 @@ public class DocEntry extends IForgeRegistryEntry.Impl<DocEntry> implements Comp
 		if (category == null)
 			throw new IllegalArgumentException("category must not be null");
 		this.category.addEntry(this);
-		this.unlocalName = "rift_entry." + unlocalName + ".name";
+		if (unlocalName.matches("rift_entry\\..*\\.name"))
+			this.unlocalName = unlocalName;
+		else
+			this.unlocalName = "rift_entry." + unlocalName + ".name";
+	}
+
+	public DocEntry(IDocEntryResource resource) {
+		this(resource.getEntryCategory(), resource.getEntryUnlocalizedName());
+		this.addPages(resource.getEntryPages());
+		this.setIcon(resource.getEntryIcon());
+		this.setRegistryName(resource.getEntryRegistryName());
 	}
 
 	public DocCategory getCategory() {
@@ -59,13 +72,15 @@ public class DocEntry extends IForgeRegistryEntry.Impl<DocEntry> implements Comp
 	}
 
 	public DocEntry addPage(DocPage page) {
-		this.pages.add(page);
+		if (page != null)
+			this.pages.add(page);
 		return this;
 	}
 
-	public DocEntry addPages(DocPage...pages) {
-		for (DocPage page : pages)
-			this.pages.add(page);
+	public DocEntry addPages(DocPage... pages) {
+		if (pages != null)
+			for (DocPage page : pages)
+				addPage(page);
 		return this;
 	}
 

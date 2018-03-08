@@ -14,7 +14,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import selim.enderrifts.RiftsRegistry;
+import selim.enderrifts.RiftRegistry;
 
 public abstract class RiftGenerator extends IForgeRegistryEntry.Impl<RiftGenerator> {
 
@@ -48,9 +48,9 @@ public abstract class RiftGenerator extends IForgeRegistryEntry.Impl<RiftGenerat
 	public static RiftGenerator[] getGenerators(DimensionType type) {
 		if (CACHE.containsKey(type))
 			return CACHE.get(type);
-		IForgeRegistry<RiftGenerator> registry = GameRegistry.findRegistry(RiftGenerator.class);
 		List<RiftGenerator> gens = new ArrayList<RiftGenerator>();
-		for (Entry<ResourceLocation, RiftGenerator> e : registry.getEntries()) {
+		for (Entry<ResourceLocation, RiftGenerator> e : RiftRegistry.Registries.RIFT_GENERATORS
+				.getEntries()) {
 			RiftGenerator gen = e.getValue();
 			if (gen != null && gen.type != null && gen.type.equals(type))
 				gens.add(gen);
@@ -58,7 +58,7 @@ public abstract class RiftGenerator extends IForgeRegistryEntry.Impl<RiftGenerat
 		RiftGenerator[] gensArr;
 		if (!gens.isEmpty())
 			gensArr = gens.toArray(new RiftGenerator[gens.size() - 1]);
-		gensArr = new RiftGenerator[] { RiftsRegistry.RiftProviders.OVERWORLD };
+		gensArr = new RiftGenerator[] { RiftRegistry.RiftProviders.OVERWORLD };
 		CACHE.put(type, gensArr);
 		return gensArr;
 	}

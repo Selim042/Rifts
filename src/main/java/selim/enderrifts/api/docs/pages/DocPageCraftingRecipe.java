@@ -19,12 +19,14 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import selim.enderrifts.ModInfo;
 import selim.enderrifts.api.docs.IGuiInfo;
 
-@SuppressWarnings("deprecation")
+@SideOnly(Side.CLIENT)
 public class DocPageCraftingRecipe extends DocPageRecipe {
 
 	private static final ResourceLocation CRAFTING = new ResourceLocation(ModInfo.ID,
@@ -68,7 +70,6 @@ public class DocPageCraftingRecipe extends DocPageRecipe {
 	@Override
 	public void onOpened(IGuiInfo gui) {
 		this.recipe = ForgeRegistries.RECIPES.getValue(this.recipeLoc);
-		this.recipe = ForgeRegistries.RECIPES.getValue(new ResourceLocation(ModInfo.ID, "rift_eye"));
 		if (recipe instanceof ShapedRecipes || recipe instanceof ShapedOreRecipe)
 			this.shapeless = false;
 		else if (recipe instanceof ShapelessRecipes || recipe instanceof ShapelessOreRecipe)

@@ -4,6 +4,7 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.BlockStateContainer.Builder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
@@ -47,6 +48,11 @@ public class BlockOpaqueAir extends BlockAir {
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		return state.getValue(OPACITY).intValue();
+	}
+
+	@Override
+	public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos) {
+		return true;
 	}
 
 	public static enum EnumOpaqueAirRange implements IStringSerializable {

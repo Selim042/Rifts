@@ -4,8 +4,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
 import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
+import selim.enderrifts.api.docs.IDocEntryLink;
 
-public class BlockAmethystBlock extends BlockNegativeLight {
+public class BlockAmethystBlock extends BlockNegativeLight implements IDocEntryLink {
 
 	private static final int RANGE = 5;
 	private static final int OPACITY = 2;
@@ -18,6 +19,11 @@ public class BlockAmethystBlock extends BlockNegativeLight {
 		this.setHardness(1.5f);
 		this.setTickRandomly(true);
 		this.lightValue = 1;
+	}
+
+	@Override
+	public ResourceLocation getLinkedEntry() {
+		return new ResourceLocation(ModInfo.ID, "amethyst");
 	}
 
 }

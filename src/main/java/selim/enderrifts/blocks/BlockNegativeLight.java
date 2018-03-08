@@ -11,7 +11,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import selim.enderrifts.RiftsRegistry;
+import selim.enderrifts.RiftRegistry;
 
 public class BlockNegativeLight extends Block {
 
@@ -64,7 +64,7 @@ public class BlockNegativeLight extends Block {
 			Block block = state.getBlock();
 			if (block instanceof BlockAir || (block instanceof BlockOpaqueAir
 					&& state.getValue(BlockOpaqueAir.OPACITY) <= opacity)) {
-				world.setBlockState(innerPos, RiftsRegistry.Blocks.OPAQUE_AIR.getDefaultState()
+				world.setBlockState(innerPos, RiftRegistry.Blocks.OPAQUE_AIR.getDefaultState()
 						.withProperty(BlockOpaqueAir.OPACITY, opacity));
 				if (range > 0)
 					placeOpaqueAir(world, innerPos, range - 1, dir.getOpposite());

@@ -1,4 +1,4 @@
-package selim.enderrifts.fuild;
+package selim.enderrifts.fluid;
 
 import java.awt.Color;
 

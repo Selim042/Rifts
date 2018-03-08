@@ -8,7 +8,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -55,7 +54,7 @@ public class PurpleTint {
 				OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 				drawRect(0, 0, scaled.getScaledWidth(), scaled.getScaledHeight(),
 						MathHelper.rgb((float) ModInfo.PURPLE_COLOR.x, (float) ModInfo.PURPLE_COLOR.y,
-								(float) ModInfo.PURPLE_COLOR.z) | (50 << 24));
+								(float) ModInfo.PURPLE_COLOR.z) | (85 << 24));
 				GL11.glDisable(GL11.GL_BLEND);
 				GL11.glPopMatrix();
 			} else

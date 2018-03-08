@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import selim.enderrifts.ModInfo;
-import selim.enderrifts.RiftsRegistry;
+import selim.enderrifts.RiftRegistry;
 
 public class RiftGeneratorNether extends DefaultRiftGenerator {
 
@@ -23,10 +23,10 @@ public class RiftGeneratorNether extends DefaultRiftGenerator {
 		IBlockState baseState = oldWorld.getBlockState(pos.add(0, -1, 0));
 		IBlockState state = oldWorld.getBlockState(pos);
 		if (baseState.getBlock().canSustainPlant(baseState, newWorld, pos, EnumFacing.UP,
-				RiftsRegistry.Blocks.RIFT_FLOWER)
+				RiftRegistry.Blocks.RIFT_FLOWER)
 				&& (state.getMaterial().equals(Material.PLANTS) || state.getBlock() instanceof BlockBush)
 				&& newWorld.rand.nextInt(16) == 1) {
-			newWorld.setBlockState(pos, RiftsRegistry.Blocks.RIFT_FLOWER.getDefaultState());
+			newWorld.setBlockState(pos, RiftRegistry.Blocks.RIFT_FLOWER.getDefaultState());
 			return true;
 		}
 		return false;

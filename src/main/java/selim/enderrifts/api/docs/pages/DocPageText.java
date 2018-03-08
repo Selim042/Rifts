@@ -5,9 +5,12 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import selim.enderrifts.api.docs.DocPage;
 import selim.enderrifts.api.docs.IGuiInfo;
 
+@SideOnly(Side.CLIENT)
 @SuppressWarnings("deprecation")
 public class DocPageText extends DocPage {
 
@@ -16,7 +19,10 @@ public class DocPageText extends DocPage {
 	public DocPageText(String... displayText) {
 		this.displayText = displayText;
 		for (int i = 0; i < this.displayText.length; i++)
-			this.displayText[i] = "rift_page." + this.displayText[i] + ".name";
+			if (displayText[i].matches("rift_page\\..*\\.name"))
+				this.displayText[i] = displayText[i];
+			else
+				this.displayText[i] = "rift_page." + this.displayText[i] + ".name";
 	}
 
 	@Override

@@ -4,14 +4,12 @@ import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import net.minecraft.client.gui.GuiRepair;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ContainerRepair;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import selim.enderrifts.crafting.CrushRecipe;
+import selim.enderrifts.RiftRegistry;
 import selim.enderrifts.jei.crush.CrushRecipeCategory;
 import selim.enderrifts.jei.crush.CrushRecipeHandler;
 
@@ -37,7 +35,7 @@ public class JeiPlugin extends BlankModPlugin {
 
 		registry.addRecipeCategoryCraftingItem(new ItemStack(Blocks.ANVIL), ANVIL_CRAFTING);
 
-		registry.addRecipes(GameRegistry.findRegistry(CrushRecipe.class).getValuesCollection());
+		registry.addRecipes(RiftRegistry.Registries.CRUSH_RECIPES.getValuesCollection());
 	}
 
 }
