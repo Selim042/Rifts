@@ -23,5 +23,5 @@ run
 
 libs
 gradle
-*/*.psd
+*.psd
 *.lnk
