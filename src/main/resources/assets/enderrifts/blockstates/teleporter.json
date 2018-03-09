@@ -1,16 +1,16 @@
 {
     "variants": {
-        "facing=down_x":  { "model": "enderrifts:teleporter", "x": 270, "y": 0 },
-        "facing=down_z":  { "model": "enderrifts:teleporter", "x": 270, "y": 90 },
+        "facing=down_x":  { "model": "enderrifts:teleporter", "x": 90  },
+        "facing=down_z":  { "model": "enderrifts:teleporter", "x": 90, "y": 90  },
         "facing=up_x":    { "model": "enderrifts:teleporter", "x": 270, "y": 180  },
         "facing=up_z":    { "model": "enderrifts:teleporter", "x": 270, "y": 270  },
-        "facing=north_y": { "model": "enderrifts:teleporter", "x": 90, "y": 0 },
-        "facing=north_x": { "model": "enderrifts:teleporter", "x": 90, "y": 90 },
-        "facing=south_y": { "model": "enderrifts:teleporter", "x": 90, "y": 180 },
-        "facing=south_x": { "model": "enderrifts:teleporter", "x": 90, "y": 270 },
-        "facing=east_y":  { "model": "enderrifts:teleporter", "x": 180, "y": 0 },
-        "facing=east_z":  { "model": "enderrifts:teleporter", "x": 180, "y": 90 },
-        "facing=west_y":  { "model": "enderrifts:teleporter", "x": 180, "y": 180 },
-        "facing=west_z":  { "model": "enderrifts:teleporter", "x": 180, "y": 270 }
+        "facing=north_y": { "model": "enderrifts:teleporter_vert" },
+        "facing=north_x": { "model": "enderrifts:teleporter" },
+        "facing=south_y": { "model": "enderrifts:teleporter_vert", "y": 180 },
+        "facing=south_x": { "model": "enderrifts:teleporter", "y": 180  },
+        "facing=east_y":  { "model": "enderrifts:teleporter_vert", "y": 90 },
+        "facing=east_z":  { "model": "enderrifts:teleporter", "y": 90 },
+        "facing=west_y":  { "model": "enderrifts:teleporter_vert", "y": 270 },
+        "facing=west_z":  { "model": "enderrifts:teleporter", "y": 270 }
     }
 }

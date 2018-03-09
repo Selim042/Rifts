@@ -1,12 +1,12 @@
 {
 	"parent": "block/cube",
 	"textures": {
-		"down": "enderrifts:blocks/teleporter_back",
-		"up": "enderrifts:blocks/teleporter_back",
+		"down": "enderrifts:blocks/teleporter_side",
+		"up": "enderrifts:blocks/teleporter_side",
 		"north": "enderrifts:blocks/teleporter_front",
 		"south": "enderrifts:blocks/teleporter_back",
-		"west": "enderrifts:blocks/teleporter_side",
-		"east": "enderrifts:blocks/teleporter_side",
+		"west": "enderrifts:blocks/teleporter_back",
+		"east": "enderrifts:blocks/teleporter_back",
 		"particle": "enderrifts:blocks/teleporter_back"
 	}
 }
