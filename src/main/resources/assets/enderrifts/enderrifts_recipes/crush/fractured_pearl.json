@@ -1,0 +1,9 @@
+{
+	"input": {
+		"type": "forge:ore_dict",
+		"ore": "enderpearl"
+	},
+	"output": {
+		"item": "enderrifts:fractured_pearl"
+	}
+}

@@ -21,7 +21,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import selim.enderrifts.ModInfo;
@@ -121,12 +124,27 @@ public class BlockRift extends BlockContainer {
 		// entity.getServer().getWorld(DimensionRift.DIMENSION_ID));
 		if (player instanceof EntityPlayerMP) {
 			if (player.getEntityWorld().provider.getDimensionType().equals(DimensionType.OVERWORLD)) {
-				TeleporterCreative.changeDimension(player, DimensionRift.DIMENSION_ID);
+				FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
+						.transferPlayerToDimension((EntityPlayerMP) player, DimensionRift.DIMENSION_ID,
+								new Teleporter(((EntityPlayerMP) player).getServerWorld()) {
+
+									@Override
+									public void placeInPortal(Entity entity, float rotationYaw) {}
+								});
+				// TeleporterCreative.changeDimension(player,
+				// DimensionRift.DIMENSION_ID);
 				// CustomTeleporter.teleportToDimension((EntityPlayerMP)
 				// playerIn,
 				// DimensionRift.DIMENSION_ID, playerIn.getPosition());
 			} else {
-				TeleporterCreative.changeDimension(player, 0);
+				FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
+						.transferPlayerToDimension((EntityPlayerMP) player, 0,
+								new Teleporter(((EntityPlayerMP) player).getServerWorld()) {
+
+									@Override
+									public void placeInPortal(Entity entity, float rotationYaw) {}
+								});
+				// TeleporterCreative.changeDimension(player, 0);
 				// CustomTeleporter.teleportToDimension((EntityPlayerMP)
 				// playerIn, 0,
 				// playerIn.getPosition());

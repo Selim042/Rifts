@@ -1,22 +1,41 @@
 package selim.enderrifts.proxy;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Map.Entry;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+
 import net.minecraft.block.Block;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
 import selim.enderrifts.ModInfo;
 import selim.enderrifts.RiftRegistry;
@@ -34,7 +53,6 @@ import selim.enderrifts.blocks.BlockRiftFlower;
 import selim.enderrifts.blocks.BlockRiftSand;
 import selim.enderrifts.blocks.BlockTeleporter;
 import selim.enderrifts.crafting.CrushRecipe;
-import selim.enderrifts.crafting.SpecificCrushRecipe;
 import selim.enderrifts.entities.EntityPhantomPearl;
 import selim.enderrifts.entities.EntityReverseFallingBlock;
 import selim.enderrifts.items.ItemAmethyst;
@@ -48,6 +66,7 @@ import selim.enderrifts.items.ItemPhantomPearl;
 import selim.enderrifts.items.ItemRiftEye;
 import selim.enderrifts.items.ItemRiftTransportNode;
 import selim.enderrifts.items.ItemUniversalDye;
+import selim.enderrifts.misc.IJsonParser;
 import selim.enderrifts.riftgenerators.RiftGeneratorNether;
 import selim.enderrifts.riftgenerators.RiftGeneratorOverworld;
 import selim.enderrifts.tiles.TileRiftPortal;
@@ -75,10 +94,7 @@ public class CommonProxy {
 
 	@SubscribeEvent
 	public static void registerCrushRecipes(RegistryEvent.Register<CrushRecipe> event) {
-		event.getRegistry()
-				.register(new SpecificCrushRecipe(new ItemStack(RiftRegistry.Items.FRACTURED_PEARL),
-						new ItemStack(Items.ENDER_PEARL))
-								.setRegistryName(new ResourceLocation(ModInfo.ID, "fractured_pearl")));
+		loadRecipes("crush", CrushRecipe.getParser(), event.getRegistry());
 	}
 
 	@SubscribeEvent
@@ -187,6 +203,8 @@ public class CommonProxy {
 
 	public void preInit() {}
 
+	private static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+
 	public void init() {}
 
 	public void postInit() {}
@@ -197,6 +215,51 @@ public class CommonProxy {
 
 	public boolean hasVisitedFromPersistance(DimensionType type) {
 		return false;
+	}
+
+	public static <T extends IForgeRegistryEntry<T>> void loadRecipes(String path, IJsonParser<T> parser,
+			IForgeRegistry<T> reg) {
+		ModContainer current = Loader.instance().activeModContainer();
+		for (Entry<String, ModContainer> entry : Loader.instance().getIndexedModList().entrySet()) {
+			ModContainer mod = entry.getValue();
+			JsonContext ctx = new JsonContext(mod.getModId());
+
+			CraftingHelper.findFiles(mod, "assets/" + mod.getModId() + "/enderrifts_recipes/" + path,
+					root -> {
+						return true;
+					}, (root, file) -> {
+						Loader.instance().setActiveModContainer(mod);
+
+						String relative = root.relativize(file).toString();
+						if (!"json".equals(FilenameUtils.getExtension(file.toString()))
+								|| relative.startsWith("_"))
+							return true;
+
+						String name = FilenameUtils.removeExtension(relative).replaceAll("\\\\", "/");
+						ResourceLocation key = new ResourceLocation(ctx.getModId(), name);
+
+						BufferedReader reader = null;
+						try {
+							reader = Files.newBufferedReader(file);
+							JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
+							if (json.has("conditions") && !CraftingHelper
+									.processConditions(JsonUtils.getJsonArray(json, "conditions"), ctx))
+								return true;
+							T val = parser.parse(json, ctx);
+							reg.register(val.setRegistryName(key));
+						} catch (JsonParseException e) {
+							FMLLog.log.error("Parsing error loading recipe {}", key, e);
+							return false;
+						} catch (IOException e) {
+							FMLLog.log.error("Couldn't read recipe {} from {}", key, file, e);
+							return false;
+						} finally {
+							IOUtils.closeQuietly(reader);
+						}
+						return true;
+					}, true, true);
+		}
+		Loader.instance().setActiveModContainer(current);
 	}
 
 }
