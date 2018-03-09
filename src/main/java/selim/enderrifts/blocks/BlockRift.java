@@ -78,8 +78,8 @@ public class BlockRift extends BlockContainer {
 
 	@Override
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
-//		if (entity instanceof EntityPlayer)
-//			teleport(world, pos, state, (EntityPlayer) entity);
+		// if (entity instanceof EntityPlayer)
+		// teleport(world, pos, state, (EntityPlayer) entity);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -106,16 +106,16 @@ public class BlockRift extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-//		return teleport(world, pos, state, player);
-		return false;
+		return teleport(world, pos, state, player);
+		// return false;
 	}
 
 	private boolean teleport(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
 		if (world.isRemote || !(player instanceof EntityPlayerMP))
 			return true;
-		if (!(!world.isRemote && !player.isRiding() && !player.isBeingRidden() && player.isNonBoss()
-				&& player.getEntityBoundingBox()
-						.intersects(state.getBoundingBox(world, pos).offset(pos))))
+		if (world.isRemote || player.isRiding() || player.isBeingRidden() || !player.isNonBoss()
+				|| !player.getEntityBoundingBox()
+						.intersects(state.getBoundingBox(world, pos).offset(pos)))
 			return true;
 		// TeleporterCreative teleporter = new TeleporterCreative(
 		// entity.getServer().getWorld(DimensionRift.DIMENSION_ID));
