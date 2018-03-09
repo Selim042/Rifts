@@ -22,6 +22,5 @@ eclipse
 run
 
 libs
-gradle
 *.psd
 *.lnk
