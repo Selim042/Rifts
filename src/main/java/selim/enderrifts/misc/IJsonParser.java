@@ -8,4 +8,6 @@ public interface IJsonParser<T> {
 
 	public T parse(JsonObject json, JsonContext ctx);
 
+	public Class<T> getType();
+
 }

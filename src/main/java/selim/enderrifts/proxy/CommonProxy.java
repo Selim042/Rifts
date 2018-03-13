@@ -31,12 +31,13 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
+import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
 import selim.enderrifts.RiftRegistry;
 import selim.enderrifts.api.RiftGenerator;
@@ -49,10 +50,13 @@ import selim.enderrifts.blocks.BlockOpalBlock;
 import selim.enderrifts.blocks.BlockOpalOre;
 import selim.enderrifts.blocks.BlockOpaqueAir;
 import selim.enderrifts.blocks.BlockRift;
+import selim.enderrifts.blocks.BlockRiftConnector;
 import selim.enderrifts.blocks.BlockRiftFlower;
+import selim.enderrifts.blocks.BlockRiftRail;
 import selim.enderrifts.blocks.BlockRiftSand;
 import selim.enderrifts.blocks.BlockTeleporter;
 import selim.enderrifts.crafting.CrushRecipe;
+import selim.enderrifts.entities.EntityPhantomCart;
 import selim.enderrifts.entities.EntityPhantomPearl;
 import selim.enderrifts.entities.EntityReverseFallingBlock;
 import selim.enderrifts.items.ItemAmethyst;
@@ -64,14 +68,18 @@ import selim.enderrifts.items.ItemFracturedPearl;
 import selim.enderrifts.items.ItemOpal;
 import selim.enderrifts.items.ItemPhantomPearl;
 import selim.enderrifts.items.ItemRiftEye;
+import selim.enderrifts.items.ItemRiftLink;
 import selim.enderrifts.items.ItemRiftTransportNode;
 import selim.enderrifts.items.ItemUniversalDye;
 import selim.enderrifts.misc.IJsonParser;
 import selim.enderrifts.riftgenerators.RiftGeneratorNether;
 import selim.enderrifts.riftgenerators.RiftGeneratorOverworld;
+import selim.enderrifts.tiles.TileRiftConnector;
 import selim.enderrifts.tiles.TileRiftPortal;
+import selim.enderrifts.tiles.TileRiftRail;
 import selim.enderrifts.tiles.TileTeleporter;
 import selim.enderrifts.utils.MiscUtils;
+import selim.enderrifts.world.BiomeRift;
 
 @Mod.EventBusSubscriber
 public class CommonProxy {
@@ -93,11 +101,6 @@ public class CommonProxy {
 	}
 
 	@SubscribeEvent
-	public static void registerCrushRecipes(RegistryEvent.Register<CrushRecipe> event) {
-		loadRecipes("crush", CrushRecipe.getParser(), event.getRegistry());
-	}
-
-	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		IForgeRegistry<Block> reg = event.getRegistry();
 		reg.register(new BlockRift());
@@ -116,6 +119,10 @@ public class CommonProxy {
 		reg.register(new BlockBarite());
 		reg.register(new BlockTeleporter());
 		GameRegistry.registerTileEntity(TileTeleporter.class, ModInfo.ID + ":teleporter");
+		reg.register(new BlockRiftConnector());
+		GameRegistry.registerTileEntity(TileRiftConnector.class, ModInfo.ID + ":rift_connector");
+		reg.register(new BlockRiftRail());
+		GameRegistry.registerTileEntity(TileRiftRail.class, ModInfo.ID + ":rift_rail");
 
 		OreDictionary.registerOre("riftOre", amethystOre);
 		OreDictionary.registerOre("riftOre", opalOre);
@@ -139,6 +146,8 @@ public class CommonProxy {
 		OreDictionary.registerOre("riftOre", registerItemBlock(reg, RiftRegistry.Blocks.OPAL_ORE));
 		registerItemBlockMeta(reg, RiftRegistry.Blocks.BARITE);
 		registerItemBlock(reg, RiftRegistry.Blocks.TELEPORTER);
+		registerItemBlock(reg, RiftRegistry.Blocks.RIFT_CONNECTOR);
+		registerItemBlock(reg, RiftRegistry.Blocks.RIFT_RAIL);
 
 		ItemUniversalDye universalDye = new ItemUniversalDye();
 		reg.register(universalDye);
@@ -154,6 +163,7 @@ public class CommonProxy {
 		reg.register(new ItemEnderLink());
 		reg.register(new ItemRiftEye());
 		reg.register(new ItemFracturedPearl());
+		reg.register(new ItemRiftLink());
 
 		for (EnumDyeColor color : EnumDyeColor.values()) {
 			String name = color.getUnlocalizedName();
@@ -184,7 +194,7 @@ public class CommonProxy {
 
 	@SubscribeEvent
 	public void registerBiome(RegistryEvent.Register<Biome> event) {
-		event.getRegistry().register(RiftRegistry.riftBiome);
+		event.getRegistry().register(new BiomeRift());
 	}
 
 	@SubscribeEvent
@@ -195,19 +205,33 @@ public class CommonProxy {
 		// event.getRegistry()
 		// .register(new EntityEntry(EntityPhantomPearl.class, ModInfo.ID +
 		// ":phantom_pearl"));
-		event.getRegistry().register(EntityEntryBuilder.create().entity(EntityReverseFallingBlock.class)
-				.id(new ResourceLocation(ModInfo.ID, "reverse_falling_block"), 0).build());
-		event.getRegistry().register(EntityEntryBuilder.create().entity(EntityPhantomPearl.class)
-				.id(new ResourceLocation(ModInfo.ID, "phantom_pearl"), 0).build());
+		// event.getRegistry().register(EntityEntryBuilder.create().entity(EntityReverseFallingBlock.class)
+		// .id(new ResourceLocation(ModInfo.ID, "reverse_falling_block"),
+		// 0).build());
+		// event.getRegistry().register(EntityEntryBuilder.create().entity(EntityPhantomPearl.class)
+		// .id(new ResourceLocation(ModInfo.ID, "phantom_pearl"), 1).build());
+		// event.getRegistry().register(EntityEntryBuilder.create().entity(EntityPhantomCart.class)
+		// .id(new ResourceLocation(ModInfo.ID, "phantom_cart"), 2).build());
 	}
 
-	public void preInit() {}
+	public void preInit() {
+		int id = 1;
+		EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.ID, "reverse_falling_block"),
+				EntityReverseFallingBlock.class, "reverse_falling_block", id++, EnderRifts.instance, 64, 3,
+				true);
+		EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.ID, "phantom_pearl"),
+				EntityPhantomPearl.class, "phantom_pearl", id++, EnderRifts.instance, 64, 3, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.ID, "phantom_cart"),
+				EntityPhantomCart.class, "phantom_cart", id++, EnderRifts.instance, 64, 3, true);
+	}
 
 	private static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
 	public void init() {}
 
-	public void postInit() {}
+	public void postInit() {
+		loadRecipes("crush", CrushRecipe.getParser());
+	}
 
 	public void setRiftShader(boolean enabled) {}
 
@@ -215,6 +239,11 @@ public class CommonProxy {
 
 	public boolean hasVisitedFromPersistance(DimensionType type) {
 		return false;
+	}
+
+	public static <T extends IForgeRegistryEntry<T>> void loadRecipes(String path,
+			IJsonParser<T> parser) {
+		loadRecipes(path, parser, GameRegistry.findRegistry(parser.getType()));
 	}
 
 	public static <T extends IForgeRegistryEntry<T>> void loadRecipes(String path, IJsonParser<T> parser,

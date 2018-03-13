@@ -42,9 +42,19 @@ tile.enderrifts:barite_april_fools_brick.name=Baconite Bricks
 itemGroup.enderrifts:main=Ender Rifts
 
 misc.enderrifts:hold_ctrl=Hold Ctrl
+misc.enderrifts:bound_to=Bound to
+misc.enderrifts:unbound=Unbound
+misc.enderrifts:clear_binding=Shift right click in the air to clear binding.
+misc.enderrifts:more_info=Shift for more information...
+misc.enderrifts:set_binding=Shift right click a block to set binding.
+misc.enderrifts:world=World
+misc.enderrifts:coords=Coordinates
+misc.enderrifts:bound_block=Bound to block.
+misc.enderrifts:cleared_binding=Cleared binding.
 
 rift_category.enderrifts:primary_category.name=The Rift
 rift_category.enderrifts:rift_overworld.name=Overworld
+rift_category.enderrifts:rift_nether.name=Nether
 
 rift_entry.enderrifts:the_rift.name=The Rift Basics
 rift_entry.enderrifts:rift_decay.name=Rift Decay

@@ -42,6 +42,11 @@ public abstract class CrushRecipe extends IForgeRegistryEntry.Impl<CrushRecipe> 
 				return new IngredientCrushRecipe(output, input);
 			}
 
+			@Override
+			public Class<CrushRecipe> getType() {
+				return CrushRecipe.class;
+			}
+
 		};
 	}
 

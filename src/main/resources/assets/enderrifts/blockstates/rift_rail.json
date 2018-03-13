@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "shape=north_south":     { "model": "enderrifts:rift_rail_flat" },
+        "shape=east_west":       { "model": "enderrifts:rift_rail_flat", "y": 90 },
+        "shape=ascending_east":  { "model": "enderrifts:rift_rail_raised_ne", "y": 90 },
+        "shape=ascending_west":  { "model": "enderrifts:rift_rail_raised_sw", "y": 90 },
+        "shape=ascending_north": { "model": "enderrifts:rift_rail_raised_ne" },
+        "shape=ascending_south": { "model": "enderrifts:rift_rail_raised_sw" }
+    }
+}

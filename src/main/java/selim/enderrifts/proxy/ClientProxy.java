@@ -37,8 +37,10 @@ import selim.enderrifts.api.docs.DocCategory;
 import selim.enderrifts.api.docs.DocEntry;
 import selim.enderrifts.api.docs.IDocEntryResource;
 import selim.enderrifts.api.docs.pages.DocPageText;
+import selim.enderrifts.entities.EntityPhantomCart;
 import selim.enderrifts.entities.EntityPhantomPearl;
 import selim.enderrifts.entities.EntityReverseFallingBlock;
+import selim.enderrifts.entities.render.RenderPhantomCart;
 import selim.enderrifts.entities.render.RenderReverseFallingBlock;
 import selim.enderrifts.events.handlers.ClientTicks;
 import selim.enderrifts.items.ItemUniversalDye.UniversalDyeItemColor;
@@ -226,6 +228,14 @@ public class ClientProxy extends CommonProxy {
 						return new RenderSnowball<EntityPhantomPearl>(manager,
 								RiftRegistry.Items.PHANTOM_PEARL,
 								Minecraft.getMinecraft().getRenderItem());
+					}
+				});
+		RenderingRegistry.registerEntityRenderingHandler(EntityPhantomCart.class,
+				new IRenderFactory<EntityPhantomCart>() {
+
+					@Override
+					public Render<? super EntityPhantomCart> createRenderFor(RenderManager manager) {
+						return new RenderPhantomCart(manager);
 					}
 				});
 		ClientRegistry.bindTileEntitySpecialRenderer(TileRiftPortal.class, new TileRiftPortalRenderer());

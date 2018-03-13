@@ -110,7 +110,7 @@ public class EnderRifts {
 
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
-		event.registerServerCommand(new TestCommand());
+//		event.registerServerCommand(new TestCommand());
 	}
 
 }

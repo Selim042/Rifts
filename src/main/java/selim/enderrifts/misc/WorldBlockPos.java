@@ -7,7 +7,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class WorldBlockPos extends BlockPos {
 
@@ -43,12 +45,20 @@ public class WorldBlockPos extends BlockPos {
 		return DimensionManager.getWorld(this.dimId);
 	}
 
+	public WorldServer getWorldServer() {
+		return FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(this.dimId);
+	}
+
 	public IBlockState getState() {
 		return this.getWorld().getBlockState(this);
 	}
 
 	public TileEntity getTileEntity() {
 		return this.getWorld().getTileEntity(this);
+	}
+
+	public int getDimension() {
+		return this.dimId;
 	}
 
 }

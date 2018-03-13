@@ -3,7 +3,7 @@
 	"textures": {
 		"down": "enderrifts:blocks/teleporter_back",
 		"up": "enderrifts:blocks/teleporter_back",
-		"north": "enderrifts:blocks/teleporter_front",
+		"north": "enderrifts:blocks/teleporter_face",
 		"south": "enderrifts:blocks/teleporter_back",
 		"west": "enderrifts:blocks/teleporter_side",
 		"east": "enderrifts:blocks/teleporter_side",

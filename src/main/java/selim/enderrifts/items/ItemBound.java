@@ -17,11 +17,13 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import selim.enderrifts.ModInfo;
 import selim.enderrifts.misc.WorldBlockPos;
 import selim.enderrifts.utils.NBTUtils;
 
@@ -31,24 +33,28 @@ public abstract class ItemBound extends Item {
 
 	public abstract boolean isValid(World world, BlockPos pos);
 
+	@SuppressWarnings("deprecation")
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flagIn) {
 		if (isBound(stack)) {
 			WorldBlockPos pos = (WorldBlockPos) NBTUtils.getPos(stack.getSubCompound(BOUND_KEY));
 			IBlockState state = pos.getState();
-			tooltip.add("Bound to " + state.getBlock().getLocalizedName());
+			tooltip.add(I18n.translateToLocal("misc." + ModInfo.ID + ":bound_to") + " "
+					+ state.getBlock().getLocalizedName());
 			tooltip.add(ChatFormatting.GRAY + ChatFormatting.ITALIC.toString()
-					+ "Shift right click in the air to clear binding.");
+					+ I18n.translateToLocal("misc." + ModInfo.ID + ":clear_binding"));
 			if (!GuiScreen.isShiftKeyDown())
 				tooltip.add(ChatFormatting.GRAY + ChatFormatting.ITALIC.toString()
-						+ "Shift for more information...");
+						+ I18n.translateToLocal("misc." + ModInfo.ID + ":more_info"));
 			else {
 				WorldProvider prov = pos.getWorld().provider;
-				tooltip.add(ChatFormatting.GRAY + ChatFormatting.ITALIC.toString() + "World: "
+				tooltip.add(ChatFormatting.GRAY + ChatFormatting.ITALIC.toString()
+						+ I18n.translateToLocal("misc." + ModInfo.ID + ":world") + ": "
 						+ ChatFormatting.GRAY + prov.getDimensionType().toString() + " ("
 						+ prov.getDimension() + ")");
-				tooltip.add(ChatFormatting.GRAY + ChatFormatting.ITALIC.toString() + "Coordinates:");
+				tooltip.add(ChatFormatting.GRAY + ChatFormatting.ITALIC.toString()
+						+ I18n.translateToLocal("misc." + ModInfo.ID + ":coords") + ":");
 				tooltip.add(ChatFormatting.GRAY + ChatFormatting.ITALIC.toString() + " x: "
 						+ ChatFormatting.GRAY + pos.getX());
 				tooltip.add(ChatFormatting.GRAY + ChatFormatting.ITALIC.toString() + " y: "
@@ -57,9 +63,9 @@ public abstract class ItemBound extends Item {
 						+ ChatFormatting.GRAY + pos.getZ());
 			}
 		} else {
-			tooltip.add("Unbound");
+			tooltip.add(I18n.translateToLocal("misc." + ModInfo.ID + ":unbound"));
 			tooltip.add(ChatFormatting.GRAY + ChatFormatting.ITALIC.toString()
-					+ "Shift right click a block to set binding.");
+					+ I18n.translateToLocal("misc." + ModInfo.ID + ":set_binding"));
 		}
 	}
 
@@ -83,7 +89,8 @@ public abstract class ItemBound extends Item {
 			// return EnumActionResult.FAIL;
 			nbt.setTag(BOUND_KEY, NBTUtils.getNBT(new WorldBlockPos(world, pos)));
 			stack.setTagCompound(nbt);
-			player.sendMessage(new TextComponentString("Bound to block."));
+			player.sendStatusMessage(new TextComponentTranslation("misc." + ModInfo.ID + ":bound_block"),
+					true);
 			return EnumActionResult.SUCCESS;
 		}
 		return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
@@ -101,7 +108,8 @@ public abstract class ItemBound extends Item {
 			nbt.setBoolean("clicked", true);
 			nbt.removeTag(BOUND_KEY);
 			stack.setTagCompound(nbt);
-			player.sendMessage(new TextComponentString("Cleared binding."));
+			player.sendStatusMessage(
+					new TextComponentTranslation("misc." + ModInfo.ID + ":cleared_binding"), true);
 			return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 		}
 		return super.onItemRightClick(world, player, hand);
@@ -123,7 +131,7 @@ public abstract class ItemBound extends Item {
 	}
 
 	public boolean isBound(ItemStack stack) {
-		if (!stack.getItem().equals(this))
+		if (!(stack.getItem() instanceof ItemBound))
 			return false;
 		BlockPos bPos = NBTUtils.getPos(stack.getSubCompound(BOUND_KEY));
 		if (bPos == null || !(bPos instanceof WorldBlockPos))
