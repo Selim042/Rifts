@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
-import selim.enderrifts.gui.GuiHandler.EnumGui;
+import selim.enderrifts.gui.GuiHandler;
 import selim.enderrifts.tiles.TileRiftConnector;
 
 public class BlockRiftConnector extends BlockContainer implements IBindable {
@@ -38,7 +38,7 @@ public class BlockRiftConnector extends BlockContainer implements IBindable {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (player != null)
-			player.openGui(EnderRifts.instance, EnumGui.BOUND_BLOCK.getId(), world, pos.getX(),
+			player.openGui(EnderRifts.instance, GuiHandler.BOUND_BLOCK, world, pos.getX(),
 					pos.getY(), pos.getZ());
 		return true;
 	}

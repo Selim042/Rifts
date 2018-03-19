@@ -11,8 +11,6 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import selim.enderrifts.RiftRegistry;
 
@@ -58,7 +56,8 @@ public abstract class RiftGenerator extends IForgeRegistryEntry.Impl<RiftGenerat
 		RiftGenerator[] gensArr;
 		if (!gens.isEmpty())
 			gensArr = gens.toArray(new RiftGenerator[gens.size() - 1]);
-		gensArr = new RiftGenerator[] { RiftRegistry.RiftProviders.OVERWORLD };
+		else
+			gensArr = new RiftGenerator[] { RiftRegistry.RiftProviders.OVERWORLD };
 		CACHE.put(type, gensArr);
 		return gensArr;
 	}

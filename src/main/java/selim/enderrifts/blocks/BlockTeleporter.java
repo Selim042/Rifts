@@ -21,10 +21,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
+import selim.enderrifts.gui.GuiHandler;
 import selim.enderrifts.tiles.TileTeleporter;
 
 public class BlockTeleporter extends BlockContainer implements IBindable {
@@ -55,7 +54,7 @@ public class BlockTeleporter extends BlockContainer implements IBindable {
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((EnumFacingAxis) state.getValue(FACING)).getId();
+		return state.getValue(FACING).getId();
 	}
 
 	@Override
@@ -110,17 +109,9 @@ public class BlockTeleporter extends BlockContainer implements IBindable {
 
 	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-		if (!worldIn.isRemote)
-			this.teleport(worldIn, pos);
-	}
-
-	protected void teleport(World world, BlockPos pos) {
-		TileEntity te = world.getTileEntity(pos);
-		if (!(te instanceof TileTeleporter))
-			return;
-		TileTeleporter tp = (TileTeleporter) te;
-		if (tp != null && tp.isTriggered()) {
-			System.out.println("teleported");
+		if (!worldIn.isRemote && worldIn.getTileEntity(pos) instanceof TileTeleporter) {
+			TileTeleporter teleporter = (TileTeleporter) worldIn.getTileEntity(pos);
+			teleporter.teleport(worldIn,pos);
 		}
 	}
 
@@ -142,29 +133,25 @@ public class BlockTeleporter extends BlockContainer implements IBindable {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity te = world.getTileEntity(pos);
-		if (te == null)
-			return false;
-		IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
-		if (!world.isRemote)
-			for (int i = 0; i < itemHandler.getSlots(); i++)
-				System.out.println(i + ":" + itemHandler.getStackInSlot(i));
-		return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
+		if (player != null)
+			player.openGui(EnderRifts.instance, GuiHandler.BOUND_BLOCK, world, pos.getX(), pos.getY(),
+					pos.getZ());
+		return true;
 	}
 
 	public static enum EnumFacingAxis implements IStringSerializable {
-		DOWN_X(0, 1, 2, EnumFacing.DOWN),
-		DOWN_Z(1, 0, 3, EnumFacing.DOWN),
-		UP_X(2, 3, 0, EnumFacing.UP),
-		UP_Z(3, 2, 3, EnumFacing.UP),
-		NORTH_Y(4, 5, 6, EnumFacing.NORTH),
-		NORTH_X(5, 4, 7, EnumFacing.NORTH),
-		SOUTH_Y(6, 7, 4, EnumFacing.SOUTH),
-		SOUTH_X(7, 6, 5, EnumFacing.SOUTH),
-		EAST_Y(8, 9, 10, EnumFacing.EAST),
-		EAST_Z(9, 8, 11, EnumFacing.EAST),
-		WEST_Y(10, 11, 8, EnumFacing.WEST),
-		WEST_Z(11, 10, 9, EnumFacing.WEST);
+		DOWN_X(0, 1, 2, EnumFacing.DOWN, EnumFacing.Axis.X),
+		DOWN_Z(1, 0, 3, EnumFacing.DOWN, EnumFacing.Axis.Z),
+		UP_X(2, 3, 0, EnumFacing.UP, EnumFacing.Axis.X),
+		UP_Z(3, 2, 3, EnumFacing.UP, EnumFacing.Axis.Z),
+		NORTH_Y(4, 5, 6, EnumFacing.NORTH, EnumFacing.Axis.Y),
+		NORTH_X(5, 4, 7, EnumFacing.NORTH, EnumFacing.Axis.X),
+		SOUTH_Y(6, 7, 4, EnumFacing.SOUTH, EnumFacing.Axis.Y),
+		SOUTH_X(7, 6, 5, EnumFacing.SOUTH, EnumFacing.Axis.X),
+		EAST_Y(8, 9, 10, EnumFacing.EAST, EnumFacing.Axis.Y),
+		EAST_Z(9, 8, 11, EnumFacing.EAST, EnumFacing.Axis.Z),
+		WEST_Y(10, 11, 8, EnumFacing.WEST, EnumFacing.Axis.Y),
+		WEST_Z(11, 10, 9, EnumFacing.WEST, EnumFacing.Axis.Z);
 
 		private final static EnumFacingAxis[] VALUES = new EnumFacingAxis[12];
 
@@ -172,12 +159,15 @@ public class BlockTeleporter extends BlockContainer implements IBindable {
 		private final int oppositeAxis;
 		private final int oppositeDir;
 		private final EnumFacing vanillaFacing;
+		private final EnumFacing.Axis axis;
 
-		EnumFacingAxis(int id, int oppositeAxis, int oppositeDir, EnumFacing vanillaFacing) {
+		EnumFacingAxis(int id, int oppositeAxis, int oppositeDir, EnumFacing vanillaFacing,
+				EnumFacing.Axis axis) {
 			this.id = id;
 			this.oppositeAxis = oppositeAxis;
 			this.oppositeDir = oppositeDir;
 			this.vanillaFacing = vanillaFacing;
+			this.axis = axis;
 		}
 
 		public int getId() {
@@ -191,9 +181,13 @@ public class BlockTeleporter extends BlockContainer implements IBindable {
 		public EnumFacingAxis getOppositeDir() {
 			return VALUES[this.oppositeDir];
 		}
-	
+
 		public EnumFacing getVanillaFacing() {
 			return this.vanillaFacing;
+		}
+
+		public EnumFacing.Axis getAxis() {
+			return this.axis;
 		}
 
 		@Override

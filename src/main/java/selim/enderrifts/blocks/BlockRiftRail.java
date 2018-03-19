@@ -30,11 +30,10 @@ import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.oredict.OreDictionary;
 import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
 import selim.enderrifts.entities.EntityPhantomCart;
-import selim.enderrifts.gui.GuiHandler.EnumGui;
+import selim.enderrifts.gui.GuiHandler;
 import selim.enderrifts.misc.WorldBlockPos;
 import selim.enderrifts.tiles.TileRiftRail;
 import selim.enderrifts.world.RiftTeleporter;
@@ -138,7 +137,7 @@ public class BlockRiftRail extends BlockRailBase implements ITileEntityProvider,
 		if (player.getHeldItem(hand).getItem() instanceof ItemMinecart)
 			return false;
 		if (player != null)
-			player.openGui(EnderRifts.instance, EnumGui.BOUND_BLOCK.getId(), world, pos.getX(),
+			player.openGui(EnderRifts.instance, GuiHandler.BOUND_BLOCK, world, pos.getX(),
 					pos.getY(), pos.getZ());
 		return true;
 	}

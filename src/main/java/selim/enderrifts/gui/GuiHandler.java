@@ -9,6 +9,9 @@ import selim.enderrifts.tiles.TileEntityBound;
 
 public class GuiHandler implements IGuiHandler {
 
+	public static final int RIFT_EYE = 0;
+	public static final int BOUND_BLOCK = 1;
+
 	protected static MainScreen lastScreen;
 
 	@Override
@@ -37,7 +40,8 @@ public class GuiHandler implements IGuiHandler {
 			TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 			if (te == null || !(te instanceof TileEntityBound))
 				return null;
-			return new BoundInventoryScreen(new ContainerBoundInventory(player.inventory, (TileEntityBound) te));
+			return new BoundInventoryScreen(
+					new ContainerBoundInventory(player.inventory, (TileEntityBound) te));
 		default:
 			return null;
 		}
@@ -49,21 +53,6 @@ public class GuiHandler implements IGuiHandler {
 		else
 			lastScreen.reloadCategories();
 		return lastScreen;
-	}
-
-	public static enum EnumGui {
-		RIFT_EYE(0),
-		BOUND_BLOCK(1);
-
-		private final int id;
-
-		EnumGui(int id) {
-			this.id = id;
-		}
-
-		public int getId() {
-			return this.id;
-		}
 	}
 
 }

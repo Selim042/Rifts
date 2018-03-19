@@ -20,9 +20,11 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeProviderSingle;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
 import selim.enderrifts.RiftRegistry;
@@ -37,7 +39,7 @@ public class WorldProviderRift extends WorldProvider {
 	@Override
 	protected void init() {
 		super.init();
-		this.biomeProvider = new BiomeProviderSingle(RiftRegistry.riftBiome);
+		this.biomeProvider = new BiomeProviderSingle(RiftRegistry.Biomes.THE_RIFT);
 	}
 
 	@Override
@@ -88,7 +90,8 @@ public class WorldProviderRift extends WorldProvider {
 
 	@Override
 	public int getRespawnDimension(EntityPlayerMP player) {
-		return super.getRespawnDimension(player);
+		// return super.getRespawnDimension(player);
+		return WorldProviderRift.getEntryDim(player);
 	}
 
 	@Override
@@ -145,18 +148,78 @@ public class WorldProviderRift extends WorldProvider {
 		}
 	}
 
+	private static final HashMap<UUID, Integer> ENTRY_DIM = new HashMap<UUID, Integer>();
 	private static final HashMap<UUID, List<BlockPos>> DECAY = new HashMap<UUID, List<BlockPos>>();
 	private static final int RADIUS = 16;
 	private static final Random rand = new Random();
 
 	@Override
 	public void onPlayerAdded(EntityPlayerMP player) {
+		// ENTRY_DIM.put(player.getUniqueID(),
+		// player.world.provider.getDimension());
+		// BlockPos pos = player.getPosition();
+		// World oldWorld = player.world;
+		// World newWorld = this.world;
+		// EnderRifts.proxy.addVisitedToPersistance(oldWorld.provider.getDimensionType());
+		// List<BlockPos> decay = new LinkedList<BlockPos>();
+		// RiftGenerator[] generators = RiftGenerator.getGenerators(oldWorld);
+		// System.out.println("s");
+		// for (int y = -RADIUS; y < RADIUS; y++) {
+		// for (int r = 0; r < MathHelper.sqrt(Math.pow(RADIUS, 2) - Math.pow(y,
+		// 2)); r++) {
+		// for (int theta = 0; theta < 360; theta++) {
+		// if (rand.nextInt(MathHelper.abs((RADIUS / 2) - RADIUS) + 2) == 1) {
+		// float x = r * MathHelper.sin(theta);
+		// float z = r * MathHelper.cos(theta);
+		// BlockPos newPos = pos.add(x, y, z);
+		// IBlockState state = oldWorld.getBlockState(newPos);
+		// if (oldWorld.getTileEntity(newPos) != null
+		// || state.getBlock() instanceof BlockAir
+		// || state.getBlock().isAir(state, oldWorld, newPos)) {
+		// if (rand.nextInt(32) == 0
+		// && newWorld.getBlockState(pos.add(0, -1, 0)).isTopSolid()) {
+		// newWorld.setBlockState(pos,
+		// RiftRegistry.Blocks.RIFT_TEST.getDefaultState());
+		// decay.add(pos);
+		// }
+		// continue;
+		// }
+		// if (state.getBlock().canPlaceBlockAt(newWorld, newPos))
+		// setBlock(generators, oldWorld, newWorld, state, newPos);
+		// decay.add(newPos);
+		// }
+		// }
+		// }
+		// }
+		// newWorld.setBlockState(pos,
+		// RiftRegistry.Blocks.RIFT_TEST.getDefaultState());
+		// decay.add(pos);
+		// DECAY.put(player.getUniqueID(), decay);
+	}
+
+	@SubscribeEvent
+	public void onWorldChange(PlayerChangedDimensionEvent event) {
+		EntityPlayer player = event.player;
+		if (event.fromDim == DimensionRift.DIMENSION_ID) {
+			ENTRY_DIM.remove(player.getUniqueID());
+			List<BlockPos> decay = DECAY.get(player.getUniqueID());
+			if (decay != null) {
+				for (BlockPos pos : decay)
+					this.world.setBlockToAir(pos);
+				DECAY.remove(player.getUniqueID());
+			}
+			return;
+		}
+		if (event.toDim != DimensionRift.DIMENSION_ID)
+			return;
+		ENTRY_DIM.put(player.getUniqueID(), event.fromDim);
 		BlockPos pos = player.getPosition();
-		World oldWorld = player.world;
+		World oldWorld = DimensionManager.getWorld(event.fromDim);
 		World newWorld = this.world;
 		EnderRifts.proxy.addVisitedToPersistance(oldWorld.provider.getDimensionType());
 		List<BlockPos> decay = new LinkedList<BlockPos>();
 		RiftGenerator[] generators = RiftGenerator.getGenerators(oldWorld);
+//		System.out.println("s");
 		for (int y = -RADIUS; y < RADIUS; y++) {
 			for (int r = 0; r < MathHelper.sqrt(Math.pow(RADIUS, 2) - Math.pow(y, 2)); r++) {
 				for (int theta = 0; theta < 360; theta++) {
@@ -167,55 +230,55 @@ public class WorldProviderRift extends WorldProvider {
 						IBlockState state = oldWorld.getBlockState(newPos);
 						if (oldWorld.getTileEntity(newPos) != null
 								|| state.getBlock() instanceof BlockAir
-								|| state.getBlock().isAir(state, oldWorld, newPos))
+								|| state.getBlock().isAir(state, oldWorld, newPos)) {
+//							if (rand.nextInt(32) == 0
+//									&& newWorld.getBlockState(newPos.add(0, -1, 0)).isTopSolid()) {
+//								newWorld.setBlockState(newPos,
+//										RiftRegistry.Blocks.RIFT_TEST.getDefaultState());
+//								decay.add(newPos);
+//							}
 							continue;
-						// BlockPos basePos = newPos.add(0, -1, 0);
-						// IBlockState baseState =
-						// newWorld.getBlockState(basePos);
-						// if (baseState.getBlock().canSustainPlant(baseState,
-						// newWorld, newPos,
-						// EnumFacing.UP, RiftsRegistry.Blocks.RIFT_FLOWER)
-						// && (state.getMaterial().equals(Material.PLANTS)
-						// || state.getBlock() instanceof BlockBush)
-						// && rand.nextInt(16) == 1) {
-						// newWorld.setBlockState(newPos,
-						// RiftsRegistry.Blocks.RIFT_FLOWER.getDefaultState());
-						// } else
+						}
 						if (state.getBlock().canPlaceBlockAt(newWorld, newPos))
 							setBlock(generators, oldWorld, newWorld, state, newPos);
-						// if (state.getBlock() instanceof IPlantable) {
-						// if (baseState.getBlock().canSustainPlant(baseState,
-						// newWorld, basePos,
-						// EnumFacing.UP, (IPlantable) state.getBlock()))
-						// setBlock(generators, oldWorld, newWorld, state, pos);
-						// } else
-						// setBlock(generators, oldWorld, newWorld, state, pos);
 						decay.add(newPos);
 					}
 				}
 			}
 		}
+		newWorld.setBlockState(pos, RiftRegistry.Blocks.RIFT_TEST.getDefaultState());
+		decay.add(pos);
 		DECAY.put(player.getUniqueID(), decay);
 	}
 
 	private void setBlock(RiftGenerator[] gens, World oldWorld, World newWorld, IBlockState state,
 			BlockPos pos) {
 		boolean set = false;
-		for (RiftGenerator gen : gens)
+		for (RiftGenerator gen : gens) {
+			// System.out.println(gen.getClass().getName());
 			if (gen.setBlock(oldWorld, newWorld, pos))
 				set = true;
-		if (!set)
+		}
+		if (!set) {
+			// System.out.println("def");
 			newWorld.setBlockState(pos, state, 18);
+		}
 	}
 
 	@Override
 	public void onPlayerRemoved(EntityPlayerMP player) {
+		ENTRY_DIM.remove(player.getUniqueID());
 		List<BlockPos> decay = DECAY.get(player.getUniqueID());
 		if (decay != null) {
 			for (BlockPos pos : decay)
 				this.world.setBlockToAir(pos);
 			DECAY.remove(player.getUniqueID());
 		}
+	}
+
+	public static int getEntryDim(EntityPlayer player) {
+		return ENTRY_DIM.containsKey(player.getUniqueID())
+				? ENTRY_DIM.get(player.getUniqueID()).intValue() : DimensionType.OVERWORLD.getId();
 	}
 
 	public void addToDecay(EntityPlayer player, BlockPos pos) {

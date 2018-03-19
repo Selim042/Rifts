@@ -1,7 +1,6 @@
 package selim.enderrifts.world;
 
 import java.util.List;
-import java.util.Random;
 
 import com.google.common.collect.ImmutableList;
 
@@ -13,17 +12,18 @@ import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.IChunkGenerator;
+import selim.enderrifts.RiftRegistry;
 
 public class ChunkGeneratorRift implements IChunkGenerator {
 
 	private final World world;
-	private Random random;
+//	private Random random;
 	private Biome[] biomesForGeneration;
 
 	public ChunkGeneratorRift(World world) {
 		this.world = world;
-		long seed = world.getSeed();
-		this.random = new Random((seed + 516) * 314);
+//		long seed = world.getSeed();
+//		this.random = new Random((seed + 516) * 314);
 	}
 
 	@Override
@@ -37,9 +37,8 @@ public class ChunkGeneratorRift implements IChunkGenerator {
 		Chunk chunk = new Chunk(this.world, chunkprimer, x, z);
 
 		byte[] biomeArray = chunk.getBiomeArray();
-		for (int i = 0; i < biomeArray.length; ++i) {
-			biomeArray[i] = (byte) Biome.getIdForBiome(this.biomesForGeneration[i]);
-		}
+		for (int i = 0; i < biomeArray.length; ++i)
+			biomeArray[i] = (byte) Biome.getIdForBiome(RiftRegistry.Biomes.THE_RIFT);
 
 		chunk.generateSkylightMap();
 		return chunk;

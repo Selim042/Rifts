@@ -32,4 +32,9 @@ public interface IDocEntryResource extends IDocEntryLink {
 		return null;
 	}
 
+	@Override
+	public default ResourceLocation getLinkedEntry() {
+		return this.getEntryRegistryName();
+	}
+
 }

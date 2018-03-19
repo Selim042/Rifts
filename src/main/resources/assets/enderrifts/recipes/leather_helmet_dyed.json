@@ -1,0 +1,17 @@
+{
+	"type": "forge:ore_shapeless",
+	"group": "enderrifts:universal_dye_armor",
+	"ingredients": [
+		{
+			"item": "enderrifts:universal_dye",
+			"data": 16
+		},
+		{
+			"item": "minecraft:leather_helmet"
+		}
+	],
+	"result": {
+		"item": "minecraft:leather_helmet",
+		"nbt": "{\"enderrifts:universal_dye\":1s}"
+	}
+}

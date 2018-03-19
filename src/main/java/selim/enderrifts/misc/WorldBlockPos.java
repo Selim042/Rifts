@@ -61,4 +61,8 @@ public class WorldBlockPos extends BlockPos {
 		return this.dimId;
 	}
 
+	public boolean isLoaded() {
+		return this.getWorld().isBlockLoaded(this);
+	}
+
 }

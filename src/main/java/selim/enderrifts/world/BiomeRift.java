@@ -3,6 +3,7 @@ package selim.enderrifts.world;
 import net.minecraft.entity.monster.EntityEndermite;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.Biome;
+import selim.enderrifts.ModInfo;
 
 public class BiomeRift extends Biome {
 
@@ -24,6 +25,7 @@ public class BiomeRift extends Biome {
 		this.flowers.clear();
 
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityEndermite.class, 1, 1, 4));
+		this.setRegistryName(ModInfo.ID, "the_rift");
 	}
 
 	private static BiomeProperties getProperties() {

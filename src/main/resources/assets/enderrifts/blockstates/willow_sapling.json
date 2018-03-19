@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "face=up": { "model": "enderrifts:willow_sapling" },
+        "face=down": { "model": "enderrifts:willow_sapling", "x" = 180 }
+    }
+}

@@ -77,12 +77,13 @@ public final class PersistencyHandler {
 		if (file.exists() && !file.isDirectory()) {
 			try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 				String l = reader.readLine();
-				if (l != null) {
-					if (TYPE_CACHE.containsKey(l)) {
+				while (l != null && !l.equals("")) {
+//					System.out.println("LOAD: " + l);
+					if (TYPE_CACHE.containsKey(l))
 						VISITED_TYPES.add(TYPE_CACHE.get(l));
-					}
 					l = reader.readLine();
 				}
+				reader.close();
 			} catch (NumberFormatException | IOException e) {
 				e.printStackTrace();
 			}

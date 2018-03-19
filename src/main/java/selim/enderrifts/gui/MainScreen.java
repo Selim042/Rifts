@@ -192,13 +192,13 @@ public class MainScreen extends GuiScreen {
 		return ((windowHeight - BACKGROUND_HEIGHT) / 3) - 16;
 	}
 
-	private void reloadCategories() {
+	public void reloadCategories() {
 		this.allCats = new LinkedList<DocCategory>(
 				ClientProxy.Registries.DOC_CATEGORIES.getValuesCollection());
 		this.displayCats = new LinkedList<DocCategory>();
 		for (DocCategory cat : allCats)
 			if (cat.getRequriedDim() == null
-					|| EnderRifts.proxy.hasVisitedFromPersistance(cat.getRequriedDim()))
+					|| EnderRifts.proxy.hasVisitedFromPersistance(cat.getRequriedDim())) 
 				displayCats.add(cat);
 		this.displayCats.sort(null);
 		if (this.pageNum >= displayCats.size() / docPerPage)

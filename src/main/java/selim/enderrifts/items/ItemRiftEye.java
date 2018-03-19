@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
+import selim.enderrifts.gui.GuiHandler;
 
 public class ItemRiftEye extends Item {
 
@@ -23,7 +24,7 @@ public class ItemRiftEye extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if (world.isRemote)
-			player.openGui(EnderRifts.instance, 0, world, 0, 0, 0);
+			player.openGui(EnderRifts.instance, GuiHandler.RIFT_EYE, world, 0, 0, 0);
 		return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
 	}
 

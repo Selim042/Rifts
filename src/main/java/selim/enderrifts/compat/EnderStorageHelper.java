@@ -25,7 +25,7 @@ public class EnderStorageHelper {
 	public static void openChest(EntityPlayer player, ItemStack stack) {
 		if (stack.isEmpty() || !(stack.getItem() instanceof ItemEnderLink))
 			return;
-		WorldBlockPos pos = ((ItemBound) stack.getItem()).getPos(stack);
+		WorldBlockPos pos = ((ItemBound) stack.getItem()).getBoundPos(stack);
 		IBlockState state = pos.getState();
 		if (state != null && state.getBlock() instanceof BlockEnderStorage) {
 			TileEntity te = pos.getTileEntity();

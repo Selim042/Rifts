@@ -40,7 +40,7 @@ public class BoundInventoryScreen extends GuiContainer {
 		ItemStack boundStack = this.container.getBindingInventory().getStackInSlot(0);
 		if (boundStack.isEmpty() || !(boundStack.getItem() instanceof ItemRiftLink))
 			return;
-		WorldBlockPos pos = ((ItemRiftLink) boundStack.getItem()).getPos(boundStack);
+		WorldBlockPos pos = ((ItemRiftLink) boundStack.getItem()).getBoundPos(boundStack);
 		if (pos == null)
 			return;
 		WorldProvider prov = pos.getWorld().provider;

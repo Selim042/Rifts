@@ -5,10 +5,15 @@ import baubles.api.cap.IBaublesItemHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 
 public class BaublesHelper {
 
 	public static final String ID = "baubles";
+
+	public static boolean isBaublesInstalled() {
+		return Loader.isModLoaded(ID);
+	}
 
 	public static int isBaubleEquipped(EntityPlayer player, Item item) {
 		return BaublesApi.isBaubleEquipped(player, item);

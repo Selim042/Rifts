@@ -40,12 +40,16 @@ import net.minecraftforge.registries.RegistryBuilder;
 import selim.enderrifts.EnderRifts;
 import selim.enderrifts.ModInfo;
 import selim.enderrifts.RiftRegistry;
+import selim.enderrifts.api.BoundFuelEntry;
 import selim.enderrifts.api.RiftGenerator;
+import selim.enderrifts.blocks.BlockAdamaniteOre;
 import selim.enderrifts.blocks.BlockAmethystBlock;
 import selim.enderrifts.blocks.BlockAmethystOre;
 import selim.enderrifts.blocks.BlockAmethystTorch;
 import selim.enderrifts.blocks.BlockBarite;
 import selim.enderrifts.blocks.BlockCustomFlowerPot;
+import selim.enderrifts.blocks.BlockNewSlab.BlockNewDoubleSlab;
+import selim.enderrifts.blocks.BlockNewSlab.BlockNewHalfSlab;
 import selim.enderrifts.blocks.BlockOpalBlock;
 import selim.enderrifts.blocks.BlockOpalOre;
 import selim.enderrifts.blocks.BlockOpaqueAir;
@@ -55,6 +59,13 @@ import selim.enderrifts.blocks.BlockRiftFlower;
 import selim.enderrifts.blocks.BlockRiftRail;
 import selim.enderrifts.blocks.BlockRiftSand;
 import selim.enderrifts.blocks.BlockTeleporter;
+import selim.enderrifts.blocks.BlockWillowButton;
+import selim.enderrifts.blocks.BlockWillowLeaves;
+import selim.enderrifts.blocks.BlockWillowLog;
+import selim.enderrifts.blocks.BlockWillowPlanks;
+import selim.enderrifts.blocks.BlockWillowPressurePlate;
+import selim.enderrifts.blocks.BlockWillowSapling;
+import selim.enderrifts.blocks.BlockWillowStairs;
 import selim.enderrifts.crafting.CrushRecipe;
 import selim.enderrifts.entities.EntityPhantomCart;
 import selim.enderrifts.entities.EntityPhantomPearl;
@@ -65,6 +76,7 @@ import selim.enderrifts.items.ItemBlockMeta;
 import selim.enderrifts.items.ItemDebugItem;
 import selim.enderrifts.items.ItemEnderLink;
 import selim.enderrifts.items.ItemFracturedPearl;
+import selim.enderrifts.items.ItemNewSlab;
 import selim.enderrifts.items.ItemOpal;
 import selim.enderrifts.items.ItemPhantomPearl;
 import selim.enderrifts.items.ItemRiftEye;
@@ -78,7 +90,9 @@ import selim.enderrifts.tiles.TileRiftConnector;
 import selim.enderrifts.tiles.TileRiftPortal;
 import selim.enderrifts.tiles.TileRiftRail;
 import selim.enderrifts.tiles.TileTeleporter;
+import selim.enderrifts.utils.ArmorUtils;
 import selim.enderrifts.utils.MiscUtils;
+import selim.enderrifts.utils.ToolUtils;
 import selim.enderrifts.world.BiomeRift;
 
 @Mod.EventBusSubscriber
@@ -91,6 +105,9 @@ public class CommonProxy {
 				.setName(new ResourceLocation(ModInfo.ID, "rift_generators")).create();
 		RiftRegistry.Registries.CRUSH_RECIPES = new RegistryBuilder<CrushRecipe>()
 				.setType(CrushRecipe.class).setName(new ResourceLocation(ModInfo.ID, "crush_recipe"))
+				.create();
+		RiftRegistry.Registries.BOUND_FUEL = new RegistryBuilder<BoundFuelEntry>()
+				.setType(BoundFuelEntry.class).setName(new ResourceLocation(ModInfo.ID, "bound_fuel"))
 				.create();
 	}
 
@@ -123,6 +140,17 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(TileRiftConnector.class, ModInfo.ID + ":rift_connector");
 		reg.register(new BlockRiftRail());
 		GameRegistry.registerTileEntity(TileRiftRail.class, ModInfo.ID + ":rift_rail");
+		reg.register(new BlockAdamaniteOre());
+		reg.register(new BlockWillowLog());
+		reg.register(new BlockWillowLeaves());
+		reg.register(new BlockWillowSapling());
+		BlockWillowPlanks planks = new BlockWillowPlanks();
+		reg.register(planks);
+		reg.register(new BlockWillowStairs(planks));
+		reg.register(new BlockNewHalfSlab(planks));
+		reg.register(new BlockNewDoubleSlab(planks));
+		reg.register(new BlockWillowPressurePlate());
+		reg.register(new BlockWillowButton());
 
 		OreDictionary.registerOre("riftOre", amethystOre);
 		OreDictionary.registerOre("riftOre", opalOre);
@@ -136,7 +164,7 @@ public class CommonProxy {
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		IForgeRegistry<Item> reg = event.getRegistry();
 		registerItemBlock(reg, RiftRegistry.Blocks.RIFT_TEST);
-		event.getRegistry().register(new ItemBlockFlower(RiftRegistry.Blocks.RIFT_FLOWER)
+		reg.register(new ItemBlockFlower(RiftRegistry.Blocks.RIFT_FLOWER)
 				.setRegistryName(RiftRegistry.Blocks.RIFT_FLOWER.getRegistryName()));
 		registerItemBlock(reg, RiftRegistry.Blocks.RIFT_SAND);
 		registerItemBlock(reg, RiftRegistry.Blocks.AMETHYST_BLOCK);
@@ -148,6 +176,17 @@ public class CommonProxy {
 		registerItemBlock(reg, RiftRegistry.Blocks.TELEPORTER);
 		registerItemBlock(reg, RiftRegistry.Blocks.RIFT_CONNECTOR);
 		registerItemBlock(reg, RiftRegistry.Blocks.RIFT_RAIL);
+		registerItemBlock(reg, RiftRegistry.Blocks.ADAMANITE_ORE);
+		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_LOG);
+		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_LEAVES);
+		reg.register(new ItemBlockFlower(RiftRegistry.Blocks.WILLOW_SAPLING)
+				.setRegistryName(RiftRegistry.Blocks.WILLOW_SAPLING.getRegistryName()));
+		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_PLANKS);
+		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_STAIRS);
+		reg.register(new ItemNewSlab(RiftRegistry.Blocks.WILLOW_PLANKS_SLAB,
+				RiftRegistry.Blocks.WILLOW_PLANKS_SLAB, RiftRegistry.Blocks.WILLOW_PLANKS_DOUBLE_SLAB));
+		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_PRESSURE_PLATE);
+		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_BUTTON);
 
 		ItemUniversalDye universalDye = new ItemUniversalDye();
 		reg.register(universalDye);
@@ -164,6 +203,11 @@ public class CommonProxy {
 		reg.register(new ItemRiftEye());
 		reg.register(new ItemFracturedPearl());
 		reg.register(new ItemRiftLink());
+
+		reg.registerAll(ToolUtils.genToolset(RiftRegistry.ToolMaterials.ADAMANITE, EnderRifts.mainTab,
+				new ResourceLocation(ModInfo.ID, "adamanite"), ModInfo.ID + ":adamanite", -2.8f));
+		reg.registerAll(ArmorUtils.genArmor(RiftRegistry.ArmorMaterials.ADAMANITE, EnderRifts.mainTab,
+				new ResourceLocation(ModInfo.ID, "adamanite"), ModInfo.ID + ":adamanite"));
 
 		for (EnumDyeColor color : EnumDyeColor.values()) {
 			String name = color.getUnlocalizedName();
@@ -214,15 +258,22 @@ public class CommonProxy {
 		// .id(new ResourceLocation(ModInfo.ID, "phantom_cart"), 2).build());
 	}
 
+	@SubscribeEvent
+	public static void registerBoundFuelEntries(RegistryEvent.Register<BoundFuelEntry> event) {
+		event.getRegistry()
+				.register(new BoundFuelEntry(new ItemStack(RiftRegistry.Items.FRACTURED_PEARL), 4)
+						.setRegistryName(new ResourceLocation(ModInfo.ID, "fratured_pearl")));
+	}
+
 	public void preInit() {
 		int id = 1;
 		EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.ID, "reverse_falling_block"),
-				EntityReverseFallingBlock.class, "reverse_falling_block", id++, EnderRifts.instance, 64, 3,
-				true);
+				EntityReverseFallingBlock.class, "reverse_falling_block", id++, EnderRifts.instance, 64,
+				1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.ID, "phantom_pearl"),
-				EntityPhantomPearl.class, "phantom_pearl", id++, EnderRifts.instance, 64, 3, true);
+				EntityPhantomPearl.class, "phantom_pearl", id++, EnderRifts.instance, 64, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.ID, "phantom_cart"),
-				EntityPhantomCart.class, "phantom_cart", id++, EnderRifts.instance, 64, 3, true);
+				EntityPhantomCart.class, "phantom_cart", id++, EnderRifts.instance, 64, 1, true);
 	}
 
 	private static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();

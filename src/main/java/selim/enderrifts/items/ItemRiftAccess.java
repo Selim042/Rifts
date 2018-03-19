@@ -32,7 +32,7 @@ public class ItemRiftAccess extends ItemBound {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 		if (!player.isSneaking() && this.isBound(stack)) {
-			WorldBlockPos pos = getPos(stack);
+			WorldBlockPos pos = getBoundPos(stack);
 			IBlockState state = pos.getState();
 			if (state.getBlock().onBlockActivated(pos.getWorld(), pos, state, player, hand,
 					EnumFacing.NORTH, 0, 0, 0))

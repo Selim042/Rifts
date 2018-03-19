@@ -25,7 +25,7 @@ public class ItemUniversalDye extends Item implements IDocEntryLink {
 		this.setRegistryName(new ResourceLocation(ModInfo.ID, "universal_dye"));
 		this.setCreativeTab(EnderRifts.mainTab);
 		this.setHasSubtypes(true);
-//		this.setMaxStackSize(1);
+		// this.setMaxStackSize(1);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class ItemUniversalDye extends Item implements IDocEntryLink {
 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-		if (tab != null && tab.equals(EnderRifts.mainTab))
+		if (tab != null && this.isInCreativeTab(tab))
 			for (int i = 0; i < 17; i++)
 				items.add(new ItemStack(this, 1, i));
 	}

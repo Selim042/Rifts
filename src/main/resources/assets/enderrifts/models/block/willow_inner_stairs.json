@@ -1,0 +1,8 @@
+{
+    "parent": "block/inner_stairs",
+    "textures": {
+        "bottom": "enderrifts:blocks/planks_willow",
+        "top": "enderrifts:blocks/planks_willow",
+        "side": "enderrifts:blocks/planks_willow"
+    }
+}

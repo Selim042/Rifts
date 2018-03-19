@@ -1,15 +1,22 @@
 package selim.enderrifts.proxy;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -37,6 +44,8 @@ import selim.enderrifts.api.docs.DocCategory;
 import selim.enderrifts.api.docs.DocEntry;
 import selim.enderrifts.api.docs.IDocEntryResource;
 import selim.enderrifts.api.docs.pages.DocPageText;
+import selim.enderrifts.blocks.BlockNewSlab;
+import selim.enderrifts.blocks.BlockWillowSapling;
 import selim.enderrifts.entities.EntityPhantomCart;
 import selim.enderrifts.entities.EntityPhantomPearl;
 import selim.enderrifts.entities.EntityReverseFallingBlock;
@@ -162,18 +171,26 @@ public class ClientProxy extends CommonProxy {
 		try {
 			for (Field f : fields) {
 				Object obj = f.get(null);
-				if (obj == null)
+				if (obj == null || obj == Items.AIR)
 					continue;
-				if (obj instanceof Item && ((Item) obj).getHasSubtypes())
+				// System.out.print("BLERP:" + f.getName() + "," +
+				// obj.getClass().getName() + ":" + obj);
+				if (obj instanceof Item && ((Item) obj).getHasSubtypes()) {
+					// System.out.println("Item (no subtypes)");
 					continue;
-				if (f.getType().equals(ItemBlock.class))
+				} else if (obj instanceof ItemBlock) {
+					// System.out.println("ItemBlock");
 					registerModel((ItemBlock) obj);
-				else if (!f.getName().equals("DEBUG_ITEM"))
+				} else if (!f.getName().equals("DEBUG_ITEM")) {
+					// System.out.println("Item (not DEBUG_ITEM)");
 					registerModel((Item) obj);
+				} else
+					System.out.println("Failed to register: " + f.getName());
 			}
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			EnderRifts.LOGGER.error("An " + e.getClass().getName()
 					+ " was thrown when attempting to load ItemBlock models.");
+			e.printStackTrace();
 		}
 		// for (EnumDyeColor color : EnumDyeColor.values())
 		// ModelLoader.setCustomModelResourceLocation(RiftsRegistry.universalDye,
@@ -189,8 +206,73 @@ public class ClientProxy extends CommonProxy {
 		registerModel(RiftRegistry.Items.BARITE, 2, "_brick");
 		// registerModel(RiftsRegistry.Items.AMETHYST);
 
+		ModelLoader.setCustomStateMapper(RiftRegistry.Blocks.WILLOW_LEAVES, NormalStateMapper.NORMAL);
+		ModelLoader.setCustomStateMapper(RiftRegistry.Blocks.OPAQUE_AIR, NormalStateMapper.NORMAL);
+		ModelLoader.setCustomStateMapper(RiftRegistry.Blocks.WILLOW_SAPLING,
+				new IgnoreStateMapper(BlockWillowSapling.STAGE));
+		IgnoreStateMapper slabIgnore = new IgnoreStateMapper(BlockNewSlab.VARIANT);
+		try {
+			for (Field f : RiftRegistry.Blocks.class.getFields()) {
+				Object obj;
+				obj = f.get(null);
+				if (obj instanceof BlockNewSlab)
+					ModelLoader.setCustomStateMapper((Block) obj, slabIgnore);
+			}
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			EnderRifts.LOGGER.error("An " + e.getClass().getName()
+					+ " was thrown when attempting to set slab StateMappers.");
+			e.printStackTrace();
+		}
+
 		if (MiscUtils.isDevEnvironment())
 			registerModel(RiftRegistry.Items.DEBUG_ITEM);
+	}
+
+	protected static class NormalStateMapper implements IStateMapper {
+
+		public static final NormalStateMapper NORMAL = new NormalStateMapper();
+
+		@Override
+		public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block block) {
+			ModelResourceLocation defLoc = new ModelResourceLocation(block.getRegistryName(), "normal");
+			HashMap<IBlockState, ModelResourceLocation> locs = new HashMap<IBlockState, ModelResourceLocation>();
+			for (IBlockState state : block.getBlockState().getValidStates())
+				locs.put(state, defLoc);
+			return locs;
+		}
+	}
+
+	protected static class IgnoreStateMapper implements IStateMapper {
+
+		private final IProperty<?>[] properties;
+
+		public IgnoreStateMapper(IProperty<?>... properties) {
+			this.properties = properties;
+		}
+
+		@Override
+		public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block block) {
+			HashMap<IBlockState, ModelResourceLocation> locs = new HashMap<IBlockState, ModelResourceLocation>();
+			for (IBlockState state : block.getBlockState().getValidStates()) {
+				String loc = "";
+				for (IProperty<?> p : state.getPropertyKeys()) {
+					if (arrContains(this.properties, p))
+						continue;
+					if (!loc.equals(""))
+						loc += ",";
+					loc += p.getName() + "=" + state.getValue(p);
+				}
+				locs.put(state, new ModelResourceLocation(block.getRegistryName(), loc));
+			}
+			return locs;
+		}
+	}
+
+	private static <T> boolean arrContains(T[] arr, T val) {
+		for (T t : arr)
+			if (t != null && t.equals(val))
+				return true;
+		return false;
 	}
 
 	private static void registerModel(Item item) {

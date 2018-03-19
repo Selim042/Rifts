@@ -175,7 +175,8 @@ public class BlockCustomFlowerPot extends Block/* Container */ {
 
 	public static enum EnumFlowerType implements IStringSerializable {
 		EMPTY(0),
-		RIFT_FLOWER(1, new ResourceLocation(ModInfo.ID, "rift_flower"));
+		RIFT_FLOWER(1, new ResourceLocation(ModInfo.ID, "rift_flower")),
+		WILLOW_SAPLING(2, new ResourceLocation(ModInfo.ID, "willow_sapling"));
 
 		private final int id;
 		private Item item;

@@ -126,7 +126,7 @@ public abstract class ItemBound extends Item {
 		}
 	}
 
-	public WorldBlockPos getPos(ItemStack stack) {
+	public WorldBlockPos getBoundPos(ItemStack stack) {
 		return (WorldBlockPos) NBTUtils.getPos(stack.getSubCompound(BOUND_KEY));
 	}
 
