@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "face=up": { "model": "rifts:willow_sapling" },
+        "face=down": { "model": "rifts:willow_sapling", "x" = 180 }
+    }
+}

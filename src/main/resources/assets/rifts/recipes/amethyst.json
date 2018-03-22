@@ -1,0 +1,12 @@
+{
+	"type": "forge:ore_shapeless",
+	"ingredients": [
+		{
+			"item": "rifts:amethyst_block"
+		}
+	],
+	"result": {
+		"item": "rifts:amethyst",
+		"count": 9
+	}
+}

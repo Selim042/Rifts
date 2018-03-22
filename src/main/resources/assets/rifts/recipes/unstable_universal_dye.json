@@ -1,0 +1,12 @@
+{
+	"type": "forge:ore_shapeless",
+	"ingredients": [
+		{
+			"item": "rifts:rift_flower"
+		}
+	],
+	"result": {
+		"item": "rifts:universal_dye",
+		"data": 16
+	}
+}

@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "rifts:items/rift_eye",
+        "layer1": "rifts:items/blink_animation"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=rough": { "model": "rifts:barite" },
+        "type=smooth": { "model": "rifts:barite_smooth" },
+        "type=brick": { "model": "rifts:barite_brick" }
+    }
+}

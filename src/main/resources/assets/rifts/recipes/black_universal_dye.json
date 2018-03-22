@@ -1,0 +1,18 @@
+{
+	"type": "forge:ore_shapeless",
+	"group": "rifts:universal_dye",
+	"ingredients": [
+		{
+			"type": "forge:ore_dict",
+			"ore": "dyeBlack"
+		},
+		{
+			"item": "rifts:universal_dye",
+			"data": 16
+		}
+	],
+	"result": {
+		"item": "rifts:universal_dye",
+		"data": 0
+	}
+}

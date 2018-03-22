@@ -1,0 +1,6 @@
+{
+    "parent": "block/cross",
+    "textures": {
+        "cross": "rifts:blocks/rift_flower"
+    }
+}

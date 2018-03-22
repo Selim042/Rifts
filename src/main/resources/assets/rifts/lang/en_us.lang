@@ -1,0 +1,81 @@
+
+item.rifts:universal_dye_white.name=White Universal Dye
+item.rifts:universal_dye_orange.name=Orange Universal Dye
+item.rifts:universal_dye_magenta.name=Magenta Universal Dye
+item.rifts:universal_dye_light_blue.name=Light Blue Universal Dye
+item.rifts:universal_dye_yellow.name=Yellow Universal Dye
+item.rifts:universal_dye_lime.name=Lime Universal Dye
+item.rifts:universal_dye_pink.name=Pink Universal Dye
+item.rifts:universal_dye_gray.name=Gray Universal Dye
+item.rifts:universal_dye_silver.name=Light Gray Universal Dye
+item.rifts:universal_dye_cyan.name=Cyan Universal Dye
+item.rifts:universal_dye_purple.name=Purple Universal Dye
+item.rifts:universal_dye_blue.name=Blue Universal Dye
+item.rifts:universal_dye_brown.name=Brown Universal Dye
+item.rifts:universal_dye_green.name=Green Universal Dye
+item.rifts:universal_dye_red.name=Red Universal Dye
+item.rifts:universal_dye_black.name=Black Universal Dye
+item.rifts:universal_dye_unstable.name=Unstable Universal Dye
+item.rifts:amethyst.name=Amethyst
+item.rifts:opal.name=Opal
+item.rifts:phantom_pearl.name=Phantom Pearl
+item.rifts:rift_transport_node.name=Rift Transport Node
+item.rifts:ender_link.name=Ender Link
+item.rifts:rift_eye.name=Rift's Eye
+item.rifts:fractured_pearl.name=Fractured Pearl
+
+tile.rifts:rift_flower.name=Rift Flower
+tile.rifts:amethyst_block.name=Amethyst Block
+tile.rifts:amethyst_torch.name=Amethyst Torch
+tile.rifts:amethyst_ore.name=Amethyst Ore
+tile.rifts:opal_block.name=Opal Block
+tile.rifts:opal_ore.name=Opal Ore
+tile.rifts:barite.name=Barite
+tile.rifts:barite_rough.name=Barite
+tile.rifts:barite_smooth.name=Polished Barite
+tile.rifts:barite_brick.name=Barite Bricks
+tile.rifts:barite_april_fools.name=Baconite
+tile.rifts:barite_april_fools_rough.name=Baconite
+tile.rifts:barite_april_fools_smooth.name=Polished Baconite
+tile.rifts:barite_april_fools_brick.name=Baconite Bricks
+
+itemGroup.rifts:main=Rifts
+
+misc.rifts:hold_ctrl=Hold Ctrl
+misc.rifts:bound_to=Bound to
+misc.rifts:unbound=Unbound
+misc.rifts:clear_binding=Shift right click in the air to clear binding.
+misc.rifts:more_info=Shift for more information...
+misc.rifts:set_binding=Shift right click a block to set binding.
+misc.rifts:world=World
+misc.rifts:coords=Coordinates
+misc.rifts:bound_block=Bound to block.
+misc.rifts:cleared_binding=Cleared binding.
+
+rift_category.rifts:primary_category.name=The Rift
+rift_category.rifts:rift_overworld.name=Overworld
+rift_category.rifts:rift_nether.name=Nether
+
+rift_entry.rifts:the_rift.name=The Rift Basics
+rift_entry.rifts:rift_decay.name=Rift Decay
+rift_entry.rifts:barite.name=Barite
+rift_entry.rifts:amethyst.name=Amethyst
+rift_entry.rifts:opal.name=Opal
+rift_entry.rifts:rift_flower.name=Rift Flower
+rift_entry.rifts:nether_rift.name=The Nether Rift
+
+rift_page.rifts:rift_basics_0_0.name=The Rift fills the void between dimensions where distance is meaningless.
+rift_page.rifts:rift_basics_0_1.name=Various creatures use it to travel long distances very quickly, even between worlds.
+rift_page.rifts:rift_basics_0_2.name=A common example of this behavior is Endermen and Nether portals.
+rift_page.rifts:rift_basics_1_0.name=When you enter the rift you will find rare resources only available there in a "corrupted" version of the world you were last in.
+rift_page.rifts:rift_basics_1_1.name=But beware, the Rift is quite dangerous.  See next entry.
+rift_page.rifts:rift_decay_0_0.name=If you haven't yet noticed, things aren't exactly the same in the Rift.  Some blocks are missing, some are completely different.
+rift_page.rifts:rift_decay_0_1.name=As you spend more time in the Rift, it will start to decay around you.
+rift_page.rifts:rift_decay_0_2.name=I don't recommend spending too much time in the Rift.
+rift_page.rifts:amethyst_0_0.name=Amethyst is a very unique material.  It seems to attract ambient light, resulting in a darker area around it.
+rift_page.rifts:amethyst_0_1.name=Using it you can create a full block that removes light from a larger region around it, or a simple torch that affects a smaller area.
+rift_page.rifts:barite_0_0.name=Barite is just another relatively not very unique purple stone variant that only seems to spawn in the rift near the Overworld.
+rift_page.rifts:barite_0_1.name=It can be crafted into smooth and brick variants.
+rift_page.rifts:rift_flower_0_0.name=The strange flowers found in the Overworld rift seem to produce an unstable dye that could possibly be used as any other dye.
+rift_page.rifts:rift_flower_0_1.name=You may need to stabilize it with a sample of a stable dye, but then it can be used as many times as you would like.
+rift_page.rifts:nether_rift_0_0.name=Whereas the Nether is generally hostile environment full of hazards, the Rift from the Nether is relatively docile.

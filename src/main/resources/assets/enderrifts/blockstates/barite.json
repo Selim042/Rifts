@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "type=rough": { "model": "enderrifts:barite" },
-        "type=smooth": { "model": "enderrifts:barite_smooth" },
-        "type=brick": { "model": "enderrifts:barite_brick" }
-    }
-}

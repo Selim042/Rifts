@@ -1,6 +1,0 @@
-{
-    "parent": "block/rail_raised_ne",
-    "textures": {
-        "rail": "enderrifts:blocks/rift_rail"
-    }
-}

@@ -1,0 +1,8 @@
+{
+    "parent": "block/outer_stairs",
+    "textures": {
+        "bottom": "rifts:blocks/planks_willow",
+        "top": "rifts:blocks/planks_willow",
+        "side": "rifts:blocks/planks_willow"
+    }
+}

@@ -1,0 +1,12 @@
+{
+	"parent": "block/cube",
+	"textures": {
+		"down": "rifts:blocks/teleporter_side",
+		"up": "rifts:blocks/teleporter_side",
+		"north": "rifts:blocks/teleporter_face",
+		"south": "rifts:blocks/teleporter_back",
+		"west": "rifts:blocks/teleporter_back",
+		"east": "rifts:blocks/teleporter_back",
+		"particle": "rifts:blocks/teleporter_back"
+	}
+}

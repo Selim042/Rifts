@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "half=bottom": { "model": "rifts:willow_planks_slab_bottom" },
+        "half=top": { "model": "rifts:willow_planks_slab_upper" }
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "parent": "block/door_bottom_rh",
+    "textures": {
+        "bottom": "rifts:blocks/door_willow_lower",
+        "top": "rifts:blocks/door_willow_upper"
+    }
+}

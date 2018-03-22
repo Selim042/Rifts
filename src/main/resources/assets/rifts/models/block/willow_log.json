@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "rifts:blocks/log_willow_top",
+        "side": "rifts:blocks/log_willow"
+    }
+}

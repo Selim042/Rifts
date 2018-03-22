@@ -1,0 +1,20 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"a",
+		"s"
+	],
+	"key": {
+		"a": {
+			"item": "rifts:amethyst"
+		},
+		"s": {
+			"type": "forge:ore_dict",
+			"ore": "stickWood"
+		}
+	},
+	"result": {
+		"item": "rifts:amethyst_torch",
+		"count": 4
+	}
+}

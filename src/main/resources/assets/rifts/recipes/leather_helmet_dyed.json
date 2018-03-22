@@ -1,0 +1,17 @@
+{
+	"type": "forge:ore_shapeless",
+	"group": "rifts:universal_dye_armor",
+	"ingredients": [
+		{
+			"item": "rifts:universal_dye",
+			"data": 16
+		},
+		{
+			"item": "minecraft:leather_helmet"
+		}
+	],
+	"result": {
+		"item": "minecraft:leather_helmet",
+		"nbt": "{\"rifts:universal_dye\":1s}"
+	}
+}

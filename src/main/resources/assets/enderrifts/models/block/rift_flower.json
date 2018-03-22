@@ -1,6 +1,0 @@
-{
-    "parent": "block/cross",
-    "textures": {
-        "cross": "enderrifts:blocks/rift_flower"
-    }
-}

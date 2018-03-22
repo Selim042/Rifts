@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "facing=down_x":  { "model": "rifts:teleporter", "x": 90  },
+        "facing=down_z":  { "model": "rifts:teleporter", "x": 90, "y": 90  },
+        "facing=up_x":    { "model": "rifts:teleporter", "x": 270, "y": 180  },
+        "facing=up_z":    { "model": "rifts:teleporter", "x": 270, "y": 270  },
+        "facing=north_y": { "model": "rifts:teleporter_vert" },
+        "facing=north_x": { "model": "rifts:teleporter" },
+        "facing=south_y": { "model": "rifts:teleporter_vert", "y": 180 },
+        "facing=south_x": { "model": "rifts:teleporter", "y": 180  },
+        "facing=east_y":  { "model": "rifts:teleporter_vert", "y": 90 },
+        "facing=east_z":  { "model": "rifts:teleporter", "y": 90 },
+        "facing=west_y":  { "model": "rifts:teleporter_vert", "y": 270 },
+        "facing=west_z":  { "model": "rifts:teleporter", "y": 270 }
+    }
+}

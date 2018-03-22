@@ -1,0 +1,21 @@
+{
+  "modListVersion": 2,
+  "modList": [{
+    "modid": "rifts",
+    "name": "Rifts",
+    "description": "The dimension between dimensions.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://minecraft.curseforge.com/projects/rifts",
+    "updateUrl": "",
+    "authorList": [ "Selim" ],
+    "credits": "Written by Selim, textures by Selim and koalaclumsy.",
+    "logoFile": "",
+    "screenshots": [ "" ],
+    "parent": "",
+    "requiredMods": [ "Forge" ],
+    "dependencies": [ "" ],
+    "dependants": [ "" ],
+    "useDependencyInformation": true
+  }]
+}

@@ -20,9 +20,9 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "1.12.2-0.0.1"
-group = "selim.enderrifts" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "EnderRifts"
+version = "1.12.2-DEV_0001"
+group = "selim.rifts" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "Rifts"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -61,8 +61,6 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
-//    compile files("libs/SelimCore-1.10.2-0.0.1.jar")
 }
 
 processResources
@@ -78,9 +76,22 @@ processResources
         // replace version and mcversion
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
+
+	// replace version in ModInfo.java
+	//from(sourceSets.main.java.srcDirs) {
+	//	include 'selim/rifts/ModInfo.java'
+	//    
+    //    // replace version and mcversion
+    //    expand 'version':project.version, 'mcversion':project.minecraft.version
+    //}
         
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+        
+    // copy everything else, thats not the ModInfo.java
+    //from(sourceSets.main.java.srcDirs) {
+	//    exclude 'selim/rifts/ModInfo.java'
+    //}
 }

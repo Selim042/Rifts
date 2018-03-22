@@ -1,6 +1,0 @@
-{
-    "variants": {
-        "powered=false": { "model": "enderrifts:willow_pressure_plate_up" },
-        "powered=true": { "model": "enderrifts:willow_pressure_plate_down" }
-    }
-}

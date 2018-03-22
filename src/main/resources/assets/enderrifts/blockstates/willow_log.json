@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "axis=y":  { "model": "enderrifts:willow_log" },
-        "axis=z":   { "model": "enderrifts:willow_log", "x": 90 },
-        "axis=x":   { "model": "enderrifts:willow_log", "x": 90, "y": 90 },
-        "axis=none": { "model": "enderrifts:willow_bark" }
-    }
-}
