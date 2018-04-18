@@ -1,0 +1,12 @@
+{
+	"type": "forge:ore_shapeless",
+	"ingredients": [
+		{
+			"item": "rifts:willow_log"
+		}
+	],
+	"result": {
+		"item": "rifts:willow_planks",
+		"count": 4
+	}
+}

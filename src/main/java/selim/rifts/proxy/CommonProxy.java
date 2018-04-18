@@ -1,11 +1,11 @@
 package selim.rifts.proxy;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
-import java.util.List;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -16,27 +16,33 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDoor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.RegistryEvent.MissingMappings;
-import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -51,6 +57,7 @@ import selim.rifts.api.docs.DocCategory;
 import selim.rifts.api.docs.DocEntry;
 import selim.rifts.api.docs.IDocEntryResource;
 import selim.rifts.api.docs.pages.DocPageText;
+import selim.rifts.blocks.BlockAdamaniteBlock;
 import selim.rifts.blocks.BlockAdamaniteOre;
 import selim.rifts.blocks.BlockAmethystBlock;
 import selim.rifts.blocks.BlockAmethystOre;
@@ -80,6 +87,13 @@ import selim.rifts.crafting.CrushRecipe;
 import selim.rifts.entities.EntityPhantomCart;
 import selim.rifts.entities.EntityPhantomPearl;
 import selim.rifts.entities.EntityReverseFallingBlock;
+import selim.rifts.events.handlers.CrushRecipeHandler;
+import selim.rifts.events.handlers.EnderTeleport;
+import selim.rifts.events.handlers.FogDensity;
+import selim.rifts.events.handlers.PlayerRenderEvent;
+import selim.rifts.events.handlers.PurpleTint;
+import selim.rifts.events.handlers.ShaderHandler;
+import selim.rifts.items.ItemAdamaniteIngot;
 import selim.rifts.items.ItemAmethyst;
 import selim.rifts.items.ItemBlockFlower;
 import selim.rifts.items.ItemBlockMeta;
@@ -108,29 +122,31 @@ import selim.rifts.world.BiomeRift;
 @Mod.EventBusSubscriber
 public class CommonProxy {
 
-//	@SubscribeEvent
-//	public static void fixBlockMappings(MissingMappings<Block> event) {
-//		List<Mapping<Block>> mappings = event.getMappings();
-//		for (Mapping<Block> mapping : mappings) {
-//			if (mapping.key.getResourceDomain().equals("enderrifts")) {
-//				Block block = mapping.registry.getValue(mapping.key);
-//				block.setRegistryName(new ResourceLocation(ModInfo.ID, mapping.key.getResourcePath()));
-//				mapping.remap(block);
-//			}
-//		}
-//	}
-//
-//	@SubscribeEvent
-//	public static void fixItemMappings(MissingMappings<Item> event) {
-//		List<Mapping<Item>> mappings = event.getMappings();
-//		for (Mapping<Item> mapping : mappings) {
-//			if (mapping.key.getResourceDomain().equals("enderrifts")) {
-//				Item item = mapping.registry.getValue(mapping.key);
-//				item.setRegistryName(new ResourceLocation(ModInfo.ID, mapping.key.getResourcePath()));
-//				mapping.remap(item);
-//			}
-//		}
-//	}
+	// @SubscribeEvent
+	// public static void fixBlockMappings(MissingMappings<Block> event) {
+	// List<Mapping<Block>> mappings = event.getMappings();
+	// for (Mapping<Block> mapping : mappings) {
+	// if (mapping.key.getResourceDomain().equals("enderrifts")) {
+	// Block block = mapping.registry.getValue(mapping.key);
+	// block.setRegistryName(new ResourceLocation(ModInfo.ID,
+	// mapping.key.getResourcePath()));
+	// mapping.remap(block);
+	// }
+	// }
+	// }
+	//
+	// @SubscribeEvent
+	// public static void fixItemMappings(MissingMappings<Item> event) {
+	// List<Mapping<Item>> mappings = event.getMappings();
+	// for (Mapping<Item> mapping : mappings) {
+	// if (mapping.key.getResourceDomain().equals("enderrifts")) {
+	// Item item = mapping.registry.getValue(mapping.key);
+	// item.setRegistryName(new ResourceLocation(ModInfo.ID,
+	// mapping.key.getResourcePath()));
+	// mapping.remap(item);
+	// }
+	// }
+	// }
 
 	@SubscribeEvent
 	public static void registerCommonRegistries(RegistryEvent.NewRegistry event) {
@@ -180,14 +196,18 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(TileRiftConnector.class, ModInfo.ID + ":rift_connector");
 		reg.register(new BlockRiftRail());
 		GameRegistry.registerTileEntity(TileRiftRail.class, ModInfo.ID + ":rift_rail");
-		reg.register(new BlockAdamaniteOre());
-		reg.register(new BlockWillowLog());
+		BlockAdamaniteOre adamaniteOre = new BlockAdamaniteOre();
+		reg.register(adamaniteOre);
+		registerBlock(reg, new BlockWillowLog(), "logWood");
+//		reg.register(new BlockWillowLog());
 		reg.register(new BlockWillowLeaves());
 		reg.register(new BlockWillowSapling());
 		BlockWillowPlanks planks = new BlockWillowPlanks();
 		reg.register(planks);
-		reg.register(new BlockWillowStairs(planks));
-		reg.register(new BlockNewHalfSlab(planks));
+		registerBlock(reg, planks, "plankWood");
+		// reg.register(new BlockWillowStairs(planks));
+		registerBlock(reg, new BlockNewHalfSlab(planks), "slabWood");
+		// reg.register(new BlockNewHalfSlab(planks));
 		reg.register(new BlockNewDoubleSlab(planks));
 		reg.register(new BlockWillowPressurePlate());
 		reg.register(new BlockWillowButton());
@@ -195,13 +215,23 @@ public class CommonProxy {
 		// draw)
 		// reg.register(new BlockUnstableBlock(Blocks.WOOL.getDefaultState()));
 		reg.register(new BlockWillowDoor());
+		BlockAdamaniteBlock adamaniteBlock = new BlockAdamaniteBlock();
+		reg.register(adamaniteBlock);
 
-		OreDictionary.registerOre("riftOre", amethystOre);
-		OreDictionary.registerOre("riftOre", opalOre);
+		// OreDictionary.registerOre("riftOre", amethystOre);
+		// OreDictionary.registerOre("riftOre", opalOre);
+		OreDictionary.registerOre("oreRiftAdamantie", adamaniteOre);
+		OreDictionary.registerOre("blockRiftAdamantie", adamaniteBlock);
 
 		// FluidRegistry.registerFluid(RiftsRegistry.Fluids.MATTER);
 		// FluidRegistry.addBucketForFluid(RiftsRegistry.Fluids.MATTER);
 		// reg.register(new BlockFluidMatter());
+	}
+
+	private static void registerBlock(IForgeRegistry<Block> reg, Block block, String... oreDict) {
+		reg.register(block);
+		for (String ore : oreDict)
+			OreDictionary.registerOre(ore, block);
 	}
 
 	@SubscribeEvent
@@ -237,6 +267,7 @@ public class CommonProxy {
 		reg.register(new ItemDoor(RiftRegistry.Blocks.WILLOW_DOOR)
 				.setRegistryName(RiftRegistry.Blocks.WILLOW_DOOR.getRegistryName())
 				.setUnlocalizedName(RiftRegistry.Blocks.WILLOW_DOOR.getUnlocalizedName()));
+		registerItemBlock(reg, RiftRegistry.Blocks.ADAMANITE_BLOCK);
 
 		ItemUniversalDye universalDye = new ItemUniversalDye();
 		reg.register(universalDye);
@@ -253,11 +284,15 @@ public class CommonProxy {
 		reg.register(new ItemRiftEye());
 		reg.register(new ItemFracturedPearl());
 		reg.register(new ItemRiftLink());
+		ItemAdamaniteIngot adamaniteIngot = new ItemAdamaniteIngot();
+		reg.register(adamaniteIngot);
 
 		reg.registerAll(ToolUtils.genToolset(RiftRegistry.ToolMaterials.ADAMANITE, EnderRifts.mainTab,
-				new ResourceLocation(ModInfo.ID, "adamanite"), ModInfo.ID + ":adamanite", -2.8f));
+				new ResourceLocation(ModInfo.ID, "adamanite"), ModInfo.ID + ":adamanite", -2.8f,
+				new ResourceLocation(ModInfo.ID, "admanite")));
 		reg.registerAll(ArmorUtils.genArmor(RiftRegistry.ArmorMaterials.ADAMANITE, EnderRifts.mainTab,
-				new ResourceLocation(ModInfo.ID, "adamanite"), ModInfo.ID + ":adamanite"));
+				new ResourceLocation(ModInfo.ID, "adamanite"), ModInfo.ID + ":adamanite",
+				new ResourceLocation(ModInfo.ID, "admanite")));
 
 		for (EnumDyeColor color : EnumDyeColor.values()) {
 			String name = color.getUnlocalizedName();
@@ -266,8 +301,9 @@ public class CommonProxy {
 					new ItemStack(universalDye, 1, color.getDyeDamage()));
 		}
 		OreDictionary.registerOre("gemLapis", new ItemStack(amethyst));
-		OreDictionary.registerOre("riftOreGem", amethyst);
-		OreDictionary.registerOre("riftOreGem", opal);
+		// OreDictionary.registerOre("riftOreGem", amethyst);
+		// OreDictionary.registerOre("riftOreGem", opal);
+		OreDictionary.registerOre("ingotRiftAdamanite", adamaniteIngot);
 
 		if (MiscUtils.isDevEnvironment())
 			event.getRegistry().register(new ItemDebugItem());
@@ -291,29 +327,41 @@ public class CommonProxy {
 		event.getRegistry().register(RiftRegistry.Entries.RIFT_DECAY);
 		RiftRegistry.Entries.RIFT_DECAY.addPage(new DocPageText(ModInfo.ID + ":rift_decay_0_0",
 				ModInfo.ID + ":rift_decay_0_1", ModInfo.ID + ":rift_decay_0_2"));
-		// ClientProxy.Entries.NETHER_RIFT.addPage(new DocPageText(ModInfo.ID +
+		// RiftRegistry.Entries.NETHER_RIFT.addPage(new DocPageText(ModInfo.ID +
 		// ":nether_rift_0_0"));
 
-		try {
-			Class<RiftRegistry.RiftProviders> riftsClazz = RiftRegistry.RiftProviders.class;
-			for (Field f : riftsClazz.getFields()) {
-				Object obj = f.get(null);
-				if (IDocEntryResource.class.isInstance(obj))
-					event.getRegistry().register(new DocEntry((IDocEntryResource) obj));
-			}
-			Class<RiftRegistry.Blocks> blocksClazz = RiftRegistry.Blocks.class;
-			for (Field f : blocksClazz.getFields()) {
-				Object obj = f.get(null);
-				if (IDocEntryResource.class.isInstance(obj))
-					event.getRegistry().register(new DocEntry((IDocEntryResource) obj));
-			}
-			Class<RiftRegistry.Items> itemsClazz = RiftRegistry.Items.class;
-			for (Field f : itemsClazz.getFields()) {
-				Object obj = f.get(null);
-				if (IDocEntryResource.class.isInstance(obj))
-					event.getRegistry().register(new DocEntry((IDocEntryResource) obj));
-			}
-		} catch (IllegalAccessException e) {}
+		for (Entry<ResourceLocation, RiftGenerator> entry : RiftRegistry.Registries.RIFT_GENERATORS
+				.getEntries())
+			if (entry.getValue() instanceof IDocEntryResource)
+				event.getRegistry().register(new DocEntry((IDocEntryResource) entry.getValue()));
+		for (Entry<ResourceLocation, Block> entry : ForgeRegistries.BLOCKS.getEntries())
+			if (entry.getValue() instanceof IDocEntryResource)
+				event.getRegistry().register(new DocEntry((IDocEntryResource) entry.getValue()));
+		for (Entry<ResourceLocation, Item> entry : ForgeRegistries.ITEMS.getEntries())
+			if (entry.getValue() instanceof IDocEntryResource)
+				event.getRegistry().register(new DocEntry((IDocEntryResource) entry.getValue()));
+
+		// try {
+		// Class<RiftRegistry.RiftProviders> riftsClazz =
+		// RiftRegistry.RiftProviders.class;
+		// for (Field f : riftsClazz.getFields()) {
+		// Object obj = f.get(null);
+		// if (IDocEntryResource.class.isInstance(obj))
+		// event.getRegistry().register(new DocEntry((IDocEntryResource) obj));
+		// }
+		// Class<RiftRegistry.Blocks> blocksClazz = RiftRegistry.Blocks.class;
+		// for (Field f : blocksClazz.getFields()) {
+		// Object obj = f.get(null);
+		// if (IDocEntryResource.class.isInstance(obj))
+		// event.getRegistry().register(new DocEntry((IDocEntryResource) obj));
+		// }
+		// Class<RiftRegistry.Items> itemsClazz = RiftRegistry.Items.class;
+		// for (Field f : itemsClazz.getFields()) {
+		// Object obj = f.get(null);
+		// if (IDocEntryResource.class.isInstance(obj))
+		// event.getRegistry().register(new DocEntry((IDocEntryResource) obj));
+		// }
+		// } catch (IllegalAccessException e) {}
 	}
 
 	private static ItemBlock registerItemBlock(IForgeRegistry<Item> reg, Block block) {
@@ -383,6 +431,49 @@ public class CommonProxy {
 
 	public boolean hasVisitedFromPersistance(DimensionType type) {
 		return false;
+	}
+
+	public void registerEventHandlers() {
+		MinecraftForge.EVENT_BUS.register(new EnderTeleport());
+		MinecraftForge.EVENT_BUS.register(new FogDensity());
+		MinecraftForge.EVENT_BUS.register(new PurpleTint());
+		MinecraftForge.EVENT_BUS.register(new ShaderHandler());
+		MinecraftForge.EVENT_BUS.register(new PlayerRenderEvent());
+		if (RiftRegistry.Items.RIFT_TRANSPORT_NODE != null)
+			MinecraftForge.EVENT_BUS.register(RiftRegistry.Items.RIFT_TRANSPORT_NODE);
+		MinecraftForge.EVENT_BUS.register(new CrushRecipeHandler());
+		// Laggy
+		// MinecraftForge.EVENT_BUS.register(new WaterEffectHandler());
+		// TODO: Replace this with something just on the client to save network
+		MinecraftForge.EVENT_BUS.register(new Object() {
+
+			private final Random rand = new Random();
+			private float hue = 0.0f;
+
+			@SubscribeEvent
+			public void onTick(PlayerTickEvent event) {
+				if (event.phase == TickEvent.Phase.START) {
+					EntityPlayer player = event.player;
+					for (ItemStack stack : player.getArmorInventoryList()) {
+						Item item = stack.getItem();
+						NBTTagCompound nbt = stack.getTagCompound();
+						if (item instanceof ItemArmor
+								&& ((ItemArmor) item).getArmorMaterial().equals(ArmorMaterial.LEATHER)
+								&& nbt.getBoolean("enderrifts:universal_dye")) {
+							ItemArmor armor = (ItemArmor) item;
+							armor.setColor(stack, getColor());
+						}
+					}
+				}
+			}
+
+			private int getColor() {
+				if (hue >= Float.MAX_VALUE / 4)
+					hue = 0.0f;
+				// TODO: Possibly have saturation & brightness fade as well
+				return Color.HSBtoRGB(hue += rand.nextFloat() / 4000, 1.0f, 1.0f);
+			}
+		});
 	}
 
 	public static <T extends IForgeRegistryEntry<T>> void loadRecipes(String path,

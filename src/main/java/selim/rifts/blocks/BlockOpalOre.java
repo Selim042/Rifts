@@ -41,7 +41,7 @@ public class BlockOpalOre extends Block implements IDocEntryLink {
 
 	@Override
 	protected ItemStack getSilkTouchDrop(IBlockState state) {
-		return new ItemStack(RiftRegistry.Blocks.OPAL_ORE);
+		return new ItemStack(this);
 	}
 
 	@Override

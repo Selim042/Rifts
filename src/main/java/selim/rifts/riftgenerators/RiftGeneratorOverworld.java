@@ -41,7 +41,8 @@ public class RiftGeneratorOverworld extends DefaultRiftGenerator {
 							: RiftRegistry.Blocks.OPAL_ORE.getDefaultState());
 			return true;
 		}
-		if (block.equals(Blocks.STONE) && !state.getValue(BlockStone.VARIANT).equals(BlockStone.EnumType.STONE)) {
+		if (block.equals(Blocks.STONE)
+				&& !state.getValue(BlockStone.VARIANT).equals(BlockStone.EnumType.STONE)) {
 			newWorld.setBlockState(pos, RiftRegistry.Blocks.BARITE.getDefaultState());
 			return true;
 		}

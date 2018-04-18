@@ -52,7 +52,9 @@ import selim.rifts.entities.EntityPhantomPearl;
 import selim.rifts.entities.EntityReverseFallingBlock;
 import selim.rifts.entities.render.RenderPhantomCart;
 import selim.rifts.entities.render.RenderReverseFallingBlock;
+import selim.rifts.events.handlers.AmethystTooltip;
 import selim.rifts.events.handlers.ClientTicks;
+import selim.rifts.events.handlers.EyeTooltipHandler;
 import selim.rifts.items.ItemUniversalDye.UniversalDyeItemColor;
 import selim.rifts.render.TileRiftPortalRenderer;
 import selim.rifts.tiles.TileRiftPortal;
@@ -61,109 +63,6 @@ import selim.rifts.utils.MiscUtils;
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
-//
-//	@SideOnly(Side.CLIENT)
-//	public static class Registries {
-//
-//		public static IForgeRegistry<DocCategory> DOC_CATEGORIES;
-//		public static IForgeRegistry<DocEntry> DOC_ENTRIES;
-//
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	@GameRegistry.ObjectHolder("enderrifts")
-//	public static class Categories {
-//
-//		public static final DocCategory PRIMARY_CATEGORY = new DocCategory(
-//				ModInfo.ID + ":primary_category")
-//						.setRegistryName(new ResourceLocation(ModInfo.ID, "primary_category"))
-//						.setPriority(9).setIcon(new ItemStack(RiftRegistry.Items.RIFT_EYE));
-//		public static final DocCategory RIFT_OVERWORLD = new DocCategory(ModInfo.ID + ":rift_overworld")
-//				.setPriority(5).setRegistryName(new ResourceLocation(ModInfo.ID, "rift_overworld"))
-//				.setIcon(new ItemStack(RiftRegistry.Items.BARITE))
-//				.setRequiredDim(DimensionType.OVERWORLD);
-//		public static final DocCategory RIFT_NETHER = new DocCategory(ModInfo.ID + ":rift_nether")
-//				.setPriority(5).setRegistryName(new ResourceLocation(ModInfo.ID, "rift_nether"))
-//				.setIcon(new ItemStack(net.minecraft.init.Blocks.NETHERRACK))
-//				.setRequiredDim(DimensionType.NETHER);
-//		public static final DocCategory RIFT_END = new DocCategory(ModInfo.ID + ":rift_end")
-//				.setPriority(5).setRegistryName(new ResourceLocation(ModInfo.ID, "rift_end"))
-//				.setIcon(new ItemStack(net.minecraft.init.Blocks.END_STONE))
-//				.setRequiredDim(DimensionType.THE_END);
-//
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	@GameRegistry.ObjectHolder("enderrifts")
-//	public static class Entries {
-//
-//		public static final DocEntry THE_RIFT = new DocEntry(Categories.PRIMARY_CATEGORY,
-//				ModInfo.ID + ":the_rift").setPriority(9)
-//						.setRegistryName(new ResourceLocation(ModInfo.ID, "the_rift"))
-//						.setIcon(new ItemStack(RiftRegistry.Items.RIFT_EYE));
-//		public static final DocEntry RIFT_DECAY = new DocEntry(Categories.PRIMARY_CATEGORY,
-//				ModInfo.ID + ":rift_decay").setPriority(7)
-//						.setRegistryName(new ResourceLocation(ModInfo.ID, "rift_decay"))
-//						.setIcon(new ItemStack(Blocks.GRASS));
-//		// public static final DocEntry NETHER_RIFT = new
-//		// DocEntry(Categories.RIFT_NETHER,
-//		// ModInfo.ID + ":nether_rift")
-//		// .setRegistryName(new ResourceLocation(ModInfo.ID, "nether_rift"))
-//		// .setIcon(new ItemStack(Blocks.NETHERRACK));
-//
-//	}
-
-//	@SubscribeEvent
-//	public static void registerClientRegistries(RegistryEvent.NewRegistry event) {
-//		ClientProxy.Registries.DOC_CATEGORIES = new RegistryBuilder<DocCategory>()
-//				.setType(DocCategory.class).setName(new ResourceLocation(ModInfo.ID, "doc_categories"))
-//				.create();
-//		ClientProxy.Registries.DOC_ENTRIES = new RegistryBuilder<DocEntry>().setType(DocEntry.class)
-//				.setName(new ResourceLocation(ModInfo.ID, "doc_entries")).create();
-//	}
-//
-//	@SubscribeEvent
-//	public static void registerCategory(RegistryEvent.Register<DocCategory> event) {
-//		event.getRegistry().register(ClientProxy.Categories.PRIMARY_CATEGORY);
-//		event.getRegistry().register(ClientProxy.Categories.RIFT_OVERWORLD);
-//		event.getRegistry().register(ClientProxy.Categories.RIFT_NETHER);
-//		event.getRegistry().register(ClientProxy.Categories.RIFT_END);
-//	}
-//
-//	@SubscribeEvent
-//	public static void registerEntries(RegistryEvent.Register<DocEntry> event) {
-//		event.getRegistry().register(ClientProxy.Entries.THE_RIFT);
-//		ClientProxy.Entries.THE_RIFT.addPages(
-//				new DocPageText(ModInfo.ID + ":rift_basics_0_0", ModInfo.ID + ":rift_basics_0_1",
-//						ModInfo.ID + ":rift_basics_0_2"),
-//				new DocPageText(ModInfo.ID + ":rift_basics_1_0", ModInfo.ID + ":rift_basics_1_1"));
-//		event.getRegistry().register(ClientProxy.Entries.RIFT_DECAY);
-//		ClientProxy.Entries.RIFT_DECAY.addPage(new DocPageText(ModInfo.ID + ":rift_decay_0_0",
-//				ModInfo.ID + ":rift_decay_0_1", ModInfo.ID + ":rift_decay_0_2"));
-//		// ClientProxy.Entries.NETHER_RIFT.addPage(new DocPageText(ModInfo.ID +
-//		// ":nether_rift_0_0"));
-//
-//		try {
-//			Class<RiftRegistry.RiftProviders> riftsClazz = RiftRegistry.RiftProviders.class;
-//			for (Field f : riftsClazz.getFields()) {
-//				Object obj = f.get(null);
-//				if (IDocEntryResource.class.isInstance(obj))
-//					event.getRegistry().register(new DocEntry((IDocEntryResource) obj));
-//			}
-//			Class<RiftRegistry.Blocks> blocksClazz = RiftRegistry.Blocks.class;
-//			for (Field f : blocksClazz.getFields()) {
-//				Object obj = f.get(null);
-//				if (IDocEntryResource.class.isInstance(obj))
-//					event.getRegistry().register(new DocEntry((IDocEntryResource) obj));
-//			}
-//			Class<RiftRegistry.Items> itemsClazz = RiftRegistry.Items.class;
-//			for (Field f : itemsClazz.getFields()) {
-//				Object obj = f.get(null);
-//				if (IDocEntryResource.class.isInstance(obj))
-//					event.getRegistry().register(new DocEntry((IDocEntryResource) obj));
-//			}
-//		} catch (IllegalAccessException e) {}
-//	}
 
 	@SubscribeEvent
 	public static void registerModels(ModelRegistryEvent event) {
@@ -208,8 +107,7 @@ public class ClientProxy extends CommonProxy {
 		IgnoreStateMapper doorIngore = new IgnoreStateMapper(BlockDoor.POWERED);
 		for (Field f : RiftRegistry.Blocks.class.getFields()) {
 			try {
-				Object obj;
-				obj = f.get(null);
+				Object obj = f.get(null);
 				if (obj instanceof BlockNewSlab)
 					ModelLoader.setCustomStateMapper((BlockNewSlab) obj, slabIgnore);
 				else if (obj instanceof BlockDoor)
@@ -299,16 +197,16 @@ public class ClientProxy extends CommonProxy {
 						return new RenderReverseFallingBlock(manager);
 					}
 				});
-		RenderingRegistry.registerEntityRenderingHandler(EntityPhantomPearl.class,
-				new IRenderFactory<EntityPhantomPearl>() {
-
-					@Override
-					public Render<? super EntityPhantomPearl> createRenderFor(RenderManager manager) {
-						return new RenderSnowball<EntityPhantomPearl>(manager,
-								RiftRegistry.Items.PHANTOM_PEARL,
-								Minecraft.getMinecraft().getRenderItem());
-					}
-				});
+//		RenderingRegistry.registerEntityRenderingHandler(EntityPhantomPearl.class,
+//				new IRenderFactory<EntityPhantomPearl>() {
+//
+//					@Override
+//					public Render<? super EntityPhantomPearl> createRenderFor(RenderManager manager) {
+//						return new RenderSnowball<EntityPhantomPearl>(manager,
+//								RiftRegistry.Items.PHANTOM_PEARL,
+//								Minecraft.getMinecraft().getRenderItem());
+//					}
+//				});
 		RenderingRegistry.registerEntityRenderingHandler(EntityPhantomCart.class,
 				new IRenderFactory<EntityPhantomCart>() {
 
@@ -385,6 +283,13 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public boolean hasVisitedFromPersistance(DimensionType type) {
 		return PersistencyHandler.hasVisited(type);
+	}
+
+	@Override
+	public void registerEventHandlers() {
+		super.registerEventHandlers();
+		MinecraftForge.EVENT_BUS.register(new AmethystTooltip());
+		MinecraftForge.EVENT_BUS.register(new EyeTooltipHandler());
 	}
 
 }

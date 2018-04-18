@@ -1,0 +1,16 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"aaa",
+		"aaa",
+		"aaa"
+	],
+	"key": {
+		"a": {
+			"item": "rifts:adamanite_ingot"
+		}
+	},
+	"result": {
+		"item": "rifts:adamanite_block"
+	}
+}

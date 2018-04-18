@@ -22,6 +22,9 @@ public class LayerGlint implements LayerRenderer<EntityLivingBase> {
 		this.selimOnly = selimOnly;
 	}
 
+	// private final Random rand = new Random();
+	// private float hue = 0.0f;
+
 	@Override
 	public void doRenderLayer(EntityLivingBase entity, float limbSwing, float limbSwingAmount,
 			float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
@@ -53,11 +56,19 @@ public class LayerGlint implements LayerRenderer<EntityLivingBase> {
 			float colorR = 0.4F;
 			float colorG = 0.2F;
 			float colorB = 0.4F;
-			float alpha = 0.5F;
+			float alpha = 0.33F;
+			// hue += 0.75f/200;
+			// Color color = Color.getHSBColor(hue, 1.0f, 0.5f);
+			// System.out.println(Color.HSBtoRGB(hue, 1.0f, 0.5f));
 			for (int i = 0; i < 1; i++) {
 				renderEnchantedGlint(render, entity, render.getMainModel(), limbSwing, limbSwingAmount,
 						partialTicks, ageInTicks, netHeadYaw, headPitch, scale, colorR, colorB, colorG,
 						alpha);
+				// renderEnchantedGlint(render, entity, render.getMainModel(),
+				// limbSwing, limbSwingAmount,
+				// partialTicks, ageInTicks, netHeadYaw, headPitch, scale,
+				// color.getRed(),
+				// color.getBlue(), color.getGreen(), alpha);
 			}
 		}
 	}
@@ -67,10 +78,10 @@ public class LayerGlint implements LayerRenderer<EntityLivingBase> {
 		return false;
 	}
 
-	public static void renderEnchantedGlint(RenderLivingBase<?> render,
-			EntityLivingBase entity, ModelBase model, float limbSwing, float limbSwingAmount,
-			float p_188364_5_, float p_188364_6_, float p_188364_7_, float p_188364_8_,
-			float p_188364_9_, float r, float g, float b, float a) {
+	public static void renderEnchantedGlint(RenderLivingBase<?> render, EntityLivingBase entity,
+			ModelBase model, float limbSwing, float limbSwingAmount, float p_188364_5_,
+			float p_188364_6_, float p_188364_7_, float p_188364_8_, float p_188364_9_, float r, float g,
+			float b, float a) {
 		float f = (float) entity.ticksExisted + p_188364_5_;
 		render.bindTexture(ENCHANTED_ITEM_GLINT_RES);
 		GlStateManager.enableBlend();

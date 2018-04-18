@@ -6,8 +6,6 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import selim.rifts.layers.LayerGlint;
-import selim.rifts.layers.LayerKoala;
 
 public class PlayerRenderEvent {
 
@@ -19,8 +17,8 @@ public class PlayerRenderEvent {
 	public void onPlayerRender(RenderPlayerEvent.Pre event) {
 		if (!addedLayers) {
 			RenderPlayer render = event.getRenderer();
-			render.addLayer(new LayerGlint(render, true));
-			render.addLayer(new LayerKoala(render, false));
+//			render.addLayer(new LayerGlint(render, true));
+//			render.addLayer(new LayerKoala(render, false));
 			// render.addLayer(new EnderEyesLayer(render, true));
 			// render.addLayer(new WingLayer(render, true));
 			addedLayers = true;

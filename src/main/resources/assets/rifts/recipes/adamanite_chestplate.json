@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "rifts:adamanite_ingot"
+    }
+  },
+  "result": {
+    "item": "rifts:adamanite_chestplate"
+  }
+}

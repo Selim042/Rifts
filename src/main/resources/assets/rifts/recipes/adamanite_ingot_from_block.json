@@ -1,0 +1,12 @@
+{
+	"type": "forge:ore_shapeless",
+	"ingredients": [
+		{
+			"item": "rifts:adamanite_block"
+		}
+	],
+	"result": {
+		"item": "rifts:adamanite",
+		"count": 9
+	}
+}

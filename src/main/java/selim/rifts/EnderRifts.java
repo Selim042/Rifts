@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -15,7 +16,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import selim.rifts.api.RiftGenerator;
-import selim.rifts.commands.TestCommand;
+import selim.rifts.compat.TinkersHelper;
 import selim.rifts.config.Config;
 import selim.rifts.creativetabs.RiftMainTab;
 import selim.rifts.proxy.CommonProxy;
@@ -55,6 +56,9 @@ public class EnderRifts {
 		// RiftsRegistry.registerEntities();
 		// RiftsRegistry.registerPotions();
 		RiftRegistry.registerDimensions();
+		
+		if (Loader.isModLoaded("tinkersconstruct"))
+			TinkersHelper.init();
 
 		proxy.preInit();
 	}
@@ -62,19 +66,19 @@ public class EnderRifts {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		// Register event handlers
-		RiftRegistry.registerEventHandlers();
+		proxy.registerEventHandlers();
 
 		// Register custom dispenser behavior
 		RiftRegistry.registerDispenserBehavior();
-
-		// Register recipes
-		// MyRecipies.addRecipies();
 
 		// Register world generators
 		RiftRegistry.registerWorldGenerators();
 
 		// Register gui handlers
 		RiftRegistry.registerGuiHandlers();
+		
+		// Register other recipes
+		RiftRegistry.registerFurnaceRecipes();
 
 		proxy.init();
 	}

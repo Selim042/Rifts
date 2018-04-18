@@ -60,7 +60,7 @@ public class ItemRiftTransportNode extends ItemBound implements IDocEntryResourc
 	@Override
 	public DocPage[] getEntryPages() {
 		DocPage[] pages = new DocPage[1];
-		pages[0] = new DocPageText("rift_transport_node_0");
+		pages[0] = new DocPageText(ModInfo.ID + ":rift_transport_node_0_0");
 		return pages;
 	}
 

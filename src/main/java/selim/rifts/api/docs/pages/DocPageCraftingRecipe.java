@@ -83,7 +83,7 @@ public class DocPageCraftingRecipe extends DocPageRecipe {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void renderRecipe(IGuiInfo gui, int mouseX, int mouseY) {
-		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+		// FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		if (recipe == null)
 			return;
 		if (recipe instanceof ShapedRecipes || recipe instanceof ShapedOreRecipe) {
@@ -113,6 +113,9 @@ public class DocPageCraftingRecipe extends DocPageRecipe {
 		}
 		renderItemOnGrid(gui, 6, 2, mouseX, mouseY, recipe.getRecipeOutput());
 		renderTooltip(gui, mouseX, mouseY);
+		if (this.shapeless) {
+			// Render shapeless icon
+		}
 	}
 
 	private ItemStack tooltipStack;
@@ -124,14 +127,13 @@ public class DocPageCraftingRecipe extends DocPageRecipe {
 		GlStateManager.enableLighting();
 		RenderHelper.disableStandardItemLighting();
 		RenderHelper.enableGUIStandardItemLighting();
-		float height = render.zLevel;
+		// float height = render.zLevel;
 		int stackX = gui.getGuiEdge() + 63 + (gridX * 18);
 		int stackY = gui.getGuiTop() + 77 + (gridY * 18);
 		render.renderItemIntoGUI(stack, stackX, stackY);
 		render.renderItemOverlays(Minecraft.getMinecraft().fontRenderer, stack, stackX, stackY);
-		if (mouseX >= stackX && mouseX < stackX + 16 && mouseY >= stackY && mouseY < stackY + 16) {
+		if (mouseX >= stackX && mouseX < stackX + 16 && mouseY >= stackY && mouseY < stackY + 16)
 			this.tooltipStack = stack;
-		}
 		RenderHelper.enableStandardItemLighting();
 		GlStateManager.popMatrix();
 	}
@@ -141,15 +143,14 @@ public class DocPageCraftingRecipe extends DocPageRecipe {
 		if (tooltipStack == null || tooltipStack == ItemStack.EMPTY)
 			return;
 		Minecraft mc = Minecraft.getMinecraft();
-		List<String> list = tooltipStack.getTooltip(mc.player, mc.gameSettings.advancedItemTooltips
-				? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL);
-		for (int i = 0; i < list.size(); ++i) {
-			if (i == 0) {
+		List<String> list = tooltipStack.getTooltip(mc.player,
+				mc.gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED
+						: ITooltipFlag.TooltipFlags.NORMAL);
+		for (int i = 0; i < list.size(); ++i)
+			if (i == 0)
 				list.set(i, tooltipStack.getRarity().rarityColor + (String) list.get(i));
-			} else {
+			else
 				list.set(i, TextFormatting.GRAY + (String) list.get(i));
-			}
-		}
 		FontRenderer font = tooltipStack.getItem().getFontRenderer(tooltipStack);
 		GuiUtils.preItemToolTip(tooltipStack);
 		GuiUtils.drawHoveringText(list, x, y, gui.getWidth(), gui.getHeight(), -1,

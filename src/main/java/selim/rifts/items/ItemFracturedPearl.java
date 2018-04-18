@@ -1,8 +1,14 @@
 package selim.rifts.items;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import selim.rifts.EnderRifts;
 import selim.rifts.ModInfo;
 import selim.rifts.RiftRegistry;
@@ -23,13 +29,13 @@ public class ItemFracturedPearl extends Item implements IDocEntryResource {
 	// @SideOnly(Side.CLIENT)
 	@Override
 	public ResourceLocation getEntryRegistryName() {
-		return new ResourceLocation(ModInfo.ID, "pearls");
+		return new ResourceLocation(ModInfo.ID, "fractured_pearls");
 	}
 
 	// @SideOnly(Side.CLIENT)
 	@Override
 	public String getEntryUnlocalizedName() {
-		return ModInfo.ID + ":pearls";
+		return ModInfo.ID + ":fractured_pearls";
 	}
 
 	// @SideOnly(Side.CLIENT)
@@ -42,7 +48,8 @@ public class ItemFracturedPearl extends Item implements IDocEntryResource {
 	@Override
 	public DocPage[] getEntryPages() {
 		DocPage[] pages = new DocPage[1];
-		pages[0] = new DocPageText(ModInfo.ID + ":pearls_0_0");
+		pages[0] = new DocPageText(ModInfo.ID + ":fractured_pearls_0_0",
+				ModInfo.ID + ":fractured_pearls_0_1");
 		return pages;
 	}
 
@@ -58,5 +65,18 @@ public class ItemFracturedPearl extends Item implements IDocEntryResource {
 		return this.getEntryRegistryName();
 	}
 	// End DocEntryResource
+
+	@Override
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+			EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (facing != EnumFacing.UP)
+			return EnumActionResult.PASS;
+		if (!world.isRemote) {
+			world.setBlockState(pos.offset(EnumFacing.UP),
+					RiftRegistry.Blocks.RIFT_TEST.getDefaultState());
+			player.getHeldItem(hand).shrink(1);
+		}
+		return EnumActionResult.SUCCESS;
+	}
 
 }

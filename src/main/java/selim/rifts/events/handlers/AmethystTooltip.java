@@ -28,8 +28,8 @@ public class AmethystTooltip {
 		// List<String> nbtStrings = new LinkedList<String>();
 		// NBTUtils.nbtToStringList(nbtStrings, stack.getTagCompound());
 		// event.getToolTip().addAll(nbtStrings);
-		for (int oreId : OreDictionary.getOreIDs(stack))
-			event.getToolTip().add(" - " + OreDictionary.getOreName(oreId));
+		// for (int oreId : OreDictionary.getOreIDs(stack))
+		// event.getToolTip().add(" - " + OreDictionary.getOreName(oreId));
 		if (!isInfused(stack))
 			return;
 		event.getToolTip()

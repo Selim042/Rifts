@@ -17,7 +17,9 @@ public class SlotBinding extends SlotItemHandler {
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		return check != null ? check.isBindingValid(stack) : false;
+		// TODO: Make this work on multiplayer
+		// return check != null ? check.isBindingValid(stack) : false;
+		return true;
 	}
 
 }

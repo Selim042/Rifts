@@ -39,9 +39,11 @@ public abstract class ItemBound extends Item {
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flagIn) {
 		if (isBound(stack)) {
 			WorldBlockPos pos = (WorldBlockPos) NBTUtils.getPos(stack.getSubCompound(BOUND_KEY));
-			IBlockState state = pos.getState();
-			tooltip.add(I18n.translateToLocal("misc." + ModInfo.ID + ":bound_to") + " "
-					+ state.getBlock().getLocalizedName());
+			// TODO: Reimplement this
+			// IBlockState state = pos.getState();
+			// tooltip.add(I18n.translateToLocal("misc." + ModInfo.ID +
+			// ":bound_to") + " "
+			// + state.getBlock().getLocalizedName());
 			tooltip.add(ChatFormatting.GRAY + ChatFormatting.ITALIC.toString()
 					+ I18n.translateToLocal("misc." + ModInfo.ID + ":clear_binding"));
 			if (!GuiScreen.isShiftKeyDown())

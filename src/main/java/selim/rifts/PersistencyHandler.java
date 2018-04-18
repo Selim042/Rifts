@@ -78,7 +78,7 @@ public final class PersistencyHandler {
 			try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 				String l = reader.readLine();
 				while (l != null && !l.equals("")) {
-//					System.out.println("LOAD: " + l);
+					// System.out.println("LOAD: " + l);
 					if (TYPE_CACHE.containsKey(l))
 						VISITED_TYPES.add(TYPE_CACHE.get(l));
 					l = reader.readLine();

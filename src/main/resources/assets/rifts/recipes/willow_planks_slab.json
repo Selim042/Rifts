@@ -1,0 +1,16 @@
+{
+	"type": "forge:ore_shaped",
+	"group": "wooden_slab",
+	"pattern": [
+		"ppp"
+	],
+	"key": {
+		"p": {
+			"item": "rifts:willow_planks"
+		}
+	},
+	"result": {
+		"item": "rifts:willow_planks_slab",
+		"count": 6
+	}
+}

@@ -1,25 +1,15 @@
 package selim.rifts;
 
-import java.awt.Color;
-import java.util.Random;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDoor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -27,12 +17,15 @@ import selim.rifts.api.BoundFuelEntry;
 import selim.rifts.api.RiftGenerator;
 import selim.rifts.api.docs.DocCategory;
 import selim.rifts.api.docs.DocEntry;
+import selim.rifts.blocks.BlockAdamaniteBlock;
 import selim.rifts.blocks.BlockAdamaniteOre;
 import selim.rifts.blocks.BlockAmethystBlock;
 import selim.rifts.blocks.BlockAmethystOre;
 import selim.rifts.blocks.BlockAmethystTorch;
 import selim.rifts.blocks.BlockBarite;
 import selim.rifts.blocks.BlockCustomFlowerPot;
+import selim.rifts.blocks.BlockNewSlab.BlockNewDoubleSlab;
+import selim.rifts.blocks.BlockNewSlab.BlockNewHalfSlab;
 import selim.rifts.blocks.BlockOpalBlock;
 import selim.rifts.blocks.BlockOpalOre;
 import selim.rifts.blocks.BlockOpaqueAir;
@@ -50,18 +43,9 @@ import selim.rifts.blocks.BlockWillowPlanks;
 import selim.rifts.blocks.BlockWillowPressurePlate;
 import selim.rifts.blocks.BlockWillowSapling;
 import selim.rifts.blocks.BlockWillowStairs;
-import selim.rifts.blocks.BlockNewSlab.BlockNewDoubleSlab;
-import selim.rifts.blocks.BlockNewSlab.BlockNewHalfSlab;
 import selim.rifts.crafting.CrushRecipe;
-import selim.rifts.events.handlers.AmethystTooltip;
-import selim.rifts.events.handlers.CrushRecipeHandler;
-import selim.rifts.events.handlers.EnderTeleport;
-import selim.rifts.events.handlers.EyeTooltipHandler;
-import selim.rifts.events.handlers.FogDensity;
-import selim.rifts.events.handlers.PlayerRenderEvent;
-import selim.rifts.events.handlers.PurpleTint;
-import selim.rifts.events.handlers.ShaderHandler;
 import selim.rifts.gui.GuiHandler;
+import selim.rifts.items.ItemAdamaniteIngot;
 import selim.rifts.items.ItemAmethyst;
 import selim.rifts.items.ItemBlockFlower;
 import selim.rifts.items.ItemDebugItem;
@@ -139,6 +123,7 @@ public class RiftRegistry {
 		// draw)
 		// public static final BlockUnstableBlock WOOL_UNSTABLE = null;
 		public static final BlockWillowDoor WILLOW_DOOR = null;
+		public static final BlockAdamaniteBlock ADAMANITE_BLOCK = null;
 
 		// public static final BlockFluidMatter MATTER = null;
 
@@ -171,6 +156,7 @@ public class RiftRegistry {
 		// draw)
 		// public static final ItemBlock WOOL_UNSTABLE = null;
 		public static final ItemDoor WILLOW_DOOR = null;
+		public static final ItemBlock ADAMANITE_BLOCK = null;
 
 		public static final ItemUniversalDye UNIVERSAL_DYE = null;
 		public static final ItemAmethyst AMETHYST = null;
@@ -184,6 +170,7 @@ public class RiftRegistry {
 		public static final ItemRiftEye RIFT_EYE = null;
 		public static final ItemFracturedPearl FRACTURED_PEARL = null;
 		public static final ItemRiftLink RIFT_LINK = null;
+		public static final ItemAdamaniteIngot ADAMANITE_INGOT = null;
 
 		public static final ItemGenPickaxe ADAMANITE_PICKAXE = null;
 		public static final ItemGenAxe ADAMANITE_AXE = null;
@@ -203,6 +190,7 @@ public class RiftRegistry {
 	public static class Biomes {
 
 		public static final BiomeRift THE_RIFT = null;
+
 	}
 
 	public static class ToolMaterials {
@@ -226,7 +214,6 @@ public class RiftRegistry {
 
 	}
 
-	// @SideOnly(Side.CLIENT)
 	@GameRegistry.ObjectHolder(ModInfo.ID)
 	public static class Categories {
 
@@ -249,7 +236,6 @@ public class RiftRegistry {
 
 	}
 
-	// @SideOnly(Side.CLIENT)
 	@GameRegistry.ObjectHolder(ModInfo.ID)
 	public static class Entries {
 
@@ -269,51 +255,6 @@ public class RiftRegistry {
 
 	}
 
-	public static void registerEventHandlers() {
-		MinecraftForge.EVENT_BUS.register(new EnderTeleport());
-		MinecraftForge.EVENT_BUS.register(new FogDensity());
-		MinecraftForge.EVENT_BUS.register(new PurpleTint());
-		MinecraftForge.EVENT_BUS.register(new ShaderHandler());
-		MinecraftForge.EVENT_BUS.register(new AmethystTooltip());
-		MinecraftForge.EVENT_BUS.register(new PlayerRenderEvent());
-		if (RiftRegistry.Items.RIFT_TRANSPORT_NODE != null)
-			MinecraftForge.EVENT_BUS.register(RiftRegistry.Items.RIFT_TRANSPORT_NODE);
-		MinecraftForge.EVENT_BUS.register(new CrushRecipeHandler());
-		// Laggy
-		// MinecraftForge.EVENT_BUS.register(new WaterEffectHandler());
-		MinecraftForge.EVENT_BUS.register(new EyeTooltipHandler());
-		// TODO: Replace this with something just on the client to save network
-		MinecraftForge.EVENT_BUS.register(new Object() {
-
-			private final Random rand = new Random();
-			private float hue = 0.0f;
-
-			@SubscribeEvent
-			public void onTick(PlayerTickEvent event) {
-				if (event.phase == TickEvent.Phase.START) {
-					EntityPlayer player = event.player;
-					for (ItemStack stack : player.getArmorInventoryList()) {
-						Item item = stack.getItem();
-						NBTTagCompound nbt = stack.getTagCompound();
-						if (item instanceof ItemArmor
-								&& ((ItemArmor) item).getArmorMaterial().equals(ArmorMaterial.LEATHER)
-								&& nbt.getBoolean("enderrifts:universal_dye")) {
-							ItemArmor armor = (ItemArmor) item;
-							armor.setColor(stack, getColor());
-						}
-					}
-				}
-			}
-
-			private int getColor() {
-				if (hue >= Float.MAX_VALUE / 4)
-					hue = 0.0f;
-				// TODO: Possibly have saturation & brightness fade as well
-				return Color.HSBtoRGB(hue += rand.nextFloat() / 4000, 1.0f, 1.0f);
-			}
-		});
-	}
-
 	public static void registerDispenserBehavior() {}
 
 	public static void registerWorldGenerators() {}
@@ -324,6 +265,14 @@ public class RiftRegistry {
 
 	public static void registerDimensions() {
 		DimensionRift.mainRegistry();
+	}
+
+	public static void registerFurnaceRecipes() {
+		FurnaceRecipes furnaceRecipes = FurnaceRecipes.instance();
+		furnaceRecipes.addSmeltingRecipeForBlock(Blocks.ADAMANITE_ORE,
+				new ItemStack(Items.ADAMANITE_INGOT), 0.7F);
+		furnaceRecipes.addSmeltingRecipeForBlock(Blocks.AMETHYST_ORE, new ItemStack(Items.AMETHYST), 1.0F);
+		furnaceRecipes.addSmeltingRecipeForBlock(Blocks.OPAL_ORE, new ItemStack(Items.OPAL), 1.0F);
 	}
 
 }

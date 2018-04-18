@@ -7,15 +7,15 @@
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "https://minecraft.curseforge.com/projects/rifts",
-    "updateUrl": "",
+    "updateUrl": "https://minecraft.curseforge.com/projects/rifts",
     "authorList": [ "Selim" ],
     "credits": "Written by Selim, textures by Selim and koalaclumsy.",
     "logoFile": "",
-    "screenshots": [ "" ],
+    "screenshots": [ ],
     "parent": "",
-    "requiredMods": [ "Forge" ],
-    "dependencies": [ "" ],
-    "dependants": [ "" ],
+    "requiredMods": [ "forge" ],
+    "dependencies": [ ],
+    "dependants": [ ],
     "useDependencyInformation": true
   }]
 }
