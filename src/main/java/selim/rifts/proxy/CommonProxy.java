@@ -196,18 +196,14 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(TileRiftConnector.class, ModInfo.ID + ":rift_connector");
 		reg.register(new BlockRiftRail());
 		GameRegistry.registerTileEntity(TileRiftRail.class, ModInfo.ID + ":rift_rail");
-		BlockAdamaniteOre adamaniteOre = new BlockAdamaniteOre();
-		reg.register(adamaniteOre);
-		registerBlock(reg, new BlockWillowLog(), "logWood");
-//		reg.register(new BlockWillowLog());
+		reg.register(new BlockAdamaniteOre());
+		reg.register(new BlockWillowLog());
 		reg.register(new BlockWillowLeaves());
 		reg.register(new BlockWillowSapling());
 		BlockWillowPlanks planks = new BlockWillowPlanks();
 		reg.register(planks);
-		registerBlock(reg, planks, "plankWood");
-		// reg.register(new BlockWillowStairs(planks));
-		registerBlock(reg, new BlockNewHalfSlab(planks), "slabWood");
-		// reg.register(new BlockNewHalfSlab(planks));
+		reg.register(new BlockWillowStairs(planks));
+		reg.register(new BlockNewHalfSlab(planks));
 		reg.register(new BlockNewDoubleSlab(planks));
 		reg.register(new BlockWillowPressurePlate());
 		reg.register(new BlockWillowButton());
@@ -215,23 +211,19 @@ public class CommonProxy {
 		// draw)
 		// reg.register(new BlockUnstableBlock(Blocks.WOOL.getDefaultState()));
 		reg.register(new BlockWillowDoor());
-		BlockAdamaniteBlock adamaniteBlock = new BlockAdamaniteBlock();
-		reg.register(adamaniteBlock);
+		reg.register(new BlockAdamaniteBlock());
+		// reg.register(new BlockRedstoneConnector());
+		// GameRegistry.registerTileEntity(TileRedstoneConnector.class, ModInfo.ID + ":redstone_connector");
 
+		// STOP TRYING TO REGISTER OREDICT HERE
 		// OreDictionary.registerOre("riftOre", amethystOre);
 		// OreDictionary.registerOre("riftOre", opalOre);
-		OreDictionary.registerOre("oreRiftAdamantie", adamaniteOre);
-		OreDictionary.registerOre("blockRiftAdamantie", adamaniteBlock);
+		// OreDictionary.registerOre("oreRiftAdamantie", adamaniteOre);
+		// OreDictionary.registerOre("blockRiftAdamantie", adamaniteBlock);
 
 		// FluidRegistry.registerFluid(RiftsRegistry.Fluids.MATTER);
 		// FluidRegistry.addBucketForFluid(RiftsRegistry.Fluids.MATTER);
 		// reg.register(new BlockFluidMatter());
-	}
-
-	private static void registerBlock(IForgeRegistry<Block> reg, Block block, String... oreDict) {
-		reg.register(block);
-		for (String ore : oreDict)
-			OreDictionary.registerOre(ore, block);
 	}
 
 	@SubscribeEvent
@@ -250,13 +242,13 @@ public class CommonProxy {
 		registerItemBlock(reg, RiftRegistry.Blocks.TELEPORTER);
 		registerItemBlock(reg, RiftRegistry.Blocks.RIFT_CONNECTOR);
 		registerItemBlock(reg, RiftRegistry.Blocks.RIFT_RAIL);
-		registerItemBlock(reg, RiftRegistry.Blocks.ADAMANITE_ORE);
-		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_LOG);
+		registerItemBlock(reg, RiftRegistry.Blocks.ADAMANITE_ORE, "oreRiftAdamanite");
+		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_LOG, "logWood");
 		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_LEAVES);
 		reg.register(new ItemBlockFlower(RiftRegistry.Blocks.WILLOW_SAPLING)
 				.setRegistryName(RiftRegistry.Blocks.WILLOW_SAPLING.getRegistryName()));
-		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_PLANKS);
-		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_STAIRS);
+		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_PLANKS, "plankWood");
+		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_STAIRS, "stairsWood");
 		reg.register(new ItemNewSlab(RiftRegistry.Blocks.WILLOW_PLANKS_SLAB,
 				RiftRegistry.Blocks.WILLOW_PLANKS_SLAB, RiftRegistry.Blocks.WILLOW_PLANKS_DOUBLE_SLAB));
 		registerItemBlock(reg, RiftRegistry.Blocks.WILLOW_PRESSURE_PLATE);
@@ -267,7 +259,7 @@ public class CommonProxy {
 		reg.register(new ItemDoor(RiftRegistry.Blocks.WILLOW_DOOR)
 				.setRegistryName(RiftRegistry.Blocks.WILLOW_DOOR.getRegistryName())
 				.setUnlocalizedName(RiftRegistry.Blocks.WILLOW_DOOR.getUnlocalizedName()));
-		registerItemBlock(reg, RiftRegistry.Blocks.ADAMANITE_BLOCK);
+		registerItemBlock(reg, RiftRegistry.Blocks.ADAMANITE_BLOCK, "oreRiftAdamanite");
 
 		ItemUniversalDye universalDye = new ItemUniversalDye();
 		reg.register(universalDye);
@@ -364,16 +356,24 @@ public class CommonProxy {
 		// } catch (IllegalAccessException e) {}
 	}
 
-	private static ItemBlock registerItemBlock(IForgeRegistry<Item> reg, Block block) {
+	private static ItemBlock registerItemBlock(IForgeRegistry<Item> reg, Block block,
+			String... oreDict) {
 		ItemBlock item = (ItemBlock) new ItemBlock(block).setRegistryName(block.getRegistryName());
 		reg.register(item);
-		return item;
+		return registerItem(reg, item, oreDict);
 	}
 
-	private static ItemBlockMeta registerItemBlockMeta(IForgeRegistry<Item> reg, Block block) {
+	private static ItemBlockMeta registerItemBlockMeta(IForgeRegistry<Item> reg, Block block,
+			String... oreDict) {
 		ItemBlockMeta item = (ItemBlockMeta) new ItemBlockMeta(block)
 				.setRegistryName(block.getRegistryName());
+		return registerItem(reg, item, oreDict);
+	}
+
+	private static <T extends Item> T registerItem(IForgeRegistry<Item> reg, T item, String... oreDict) {
 		reg.register(item);
+		for (String ore : oreDict)
+			OreDictionary.registerOre(ore, item);
 		return item;
 	}
 
