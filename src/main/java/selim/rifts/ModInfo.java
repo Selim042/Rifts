@@ -11,7 +11,7 @@ public class ModInfo {
 	public static final String ID = "rifts";
 	public static final String NAME = "Rifts";
 	// TODO: Make the build.gradle copy version here
-	public static final String VERSION = "1.12.2-DEV_0001";
+	public static final String VERSION = "1.12.2-DEV_0002";
 	public static final String PROXY_SERVER = "selim.rifts.proxy.CommonProxy";
 	public static final String PROXY_CLIENT = "selim.rifts.proxy.ClientProxy";
 	public static final String DEPENDENCIES = "after:" + BaublesHelper.ID + ";after:"
