@@ -91,7 +91,10 @@ public class WorldProviderRift extends WorldProvider {
 	@Override
 	public int getRespawnDimension(EntityPlayerMP player) {
 		// return super.getRespawnDimension(player);
-		return WorldProviderRift.getEntryDim(player);
+		WorldProvider prov = DimensionManager.getProvider((WorldProviderRift.getEntryDim(player)));
+		if (prov == this)
+			return 0;
+		return prov.getRespawnDimension(player);
 	}
 
 	@Override
