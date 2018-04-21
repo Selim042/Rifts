@@ -30,16 +30,20 @@ public final class PersistencyHandler {
 		if (initalized)
 			return;
 		initalized = true;
+		// Disable this for now
+		if (true)
+			return;
+		System.out.println("READING");
 		// if (!ConfigHandler.usePersistentData)
 		// return;
 		String home = System.getProperty("user.home");
 		String os = System.getProperty("os.name");
 		if (os.startsWith("Windows"))
-			home += "\\AppData\\Roaming\\.minecraft\\ender_rifts";
+			home += "\\AppData\\Roaming\\.minecraft\\rifts";
 		else if (os.startsWith("Mac"))
-			home += "/Library/Application Support/minecraft/ender_rifts";
+			home += "/Library/Application Support/minecraft/rifts";
 		else
-			home += "/.minecraft/ender_rifts";
+			home += "/.minecraft/rifts";
 		File dir = new File(home);
 		if (!dir.exists())
 			dir.mkdirs();
@@ -48,11 +52,9 @@ public final class PersistencyHandler {
 		if (!readMe.exists()) {
 			try (BufferedWriter writer = new BufferedWriter(new FileWriter(readMe))) {
 				readMe.createNewFile();
-				writer.write(
-						"This is a folder to store information to persist for the Ender Rifts mod.");
+				writer.write("This is a folder to store information to persist for the Rifts mod.");
 				writer.newLine();
-				writer.write(
-						"The information stored here is accessible to players using the Ender Rifts mod");
+				writer.write("The information stored here is accessible to players using the Rifts mod");
 				writer.write(
 						"to allow them to skip part of the progression if they have already completed it.");
 				writer.newLine();
@@ -62,7 +64,7 @@ public final class PersistencyHandler {
 				writer.newLine();
 				writer.newLine();
 				// TODO: Add the config option mentioned below
-				writer.write("You can disable this functionality in the Ender Rifts config.");
+				writer.write("You can disable this functionality in the Rifts config.");
 				writer.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -93,14 +95,18 @@ public final class PersistencyHandler {
 	public static void addVisited(DimensionType type) {
 		if (!initalized || VISITED_TYPES.contains(type))
 			return;
-		VISITED_TYPES.add(type);
-		save();
+		// Disable this for now
+		// VISITED_TYPES.add(type);
+		// System.out.println("visting");
+		// save();
 	}
 
 	public static boolean hasVisited(DimensionType type) {
-		if (!initalized)
-			return false;
-		return VISITED_TYPES.contains(type);
+		return true;
+		// Disable this for now
+		// if (!initalized)
+		// return false;
+		// return VISITED_TYPES.contains(type);
 	}
 
 	public static void save() {
