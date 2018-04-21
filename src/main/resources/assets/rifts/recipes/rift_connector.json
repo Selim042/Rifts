@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "sps",
+    " c ",
+    "sps"
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:stone",
+      "data": 0
+    },
+    "p": {
+      "item": "minecraft:ender_pearl"
+    },
+    "c": {
+      "item": "rifts:fractured_pearl"
+    }
+  },
+  "result": {
+    "item": "rifts:rift_connector"
+  }
+}

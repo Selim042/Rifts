@@ -6,11 +6,19 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class ParticleRune extends Particle {
 
 	protected ParticleRune(World worldIn, double posXIn, double posYIn, double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
+	}
+
+	protected ParticleRune(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn,
+			double xSpeedIn, double ySpeedIn, double zSpeedIn) {
+		super(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn);
 	}
 
 	@Override
@@ -113,11 +121,6 @@ public class ParticleRune extends Particle {
 	@Override
 	public int getBrightnessForRender(float p_189214_1_) {
 		return super.getBrightnessForRender(p_189214_1_);
-	}
-
-	@Override
-	public boolean isAlive() {
-		return super.isAlive();
 	}
 
 	@Override
