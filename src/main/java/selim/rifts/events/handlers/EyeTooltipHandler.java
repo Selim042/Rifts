@@ -11,11 +11,11 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -28,15 +28,15 @@ import selim.rifts.api.docs.IDocEntryLink;
 import selim.rifts.gui.EntryScreen;
 import selim.rifts.gui.GuiHandler;
 import selim.rifts.items.ItemRiftEye;
+import selim.rifts.proxy.ClientProxy;
 
 @SideOnly(Side.CLIENT)
-@SuppressWarnings("deprecation")
 public class EyeTooltipHandler {
 
-	private static final int DEFAULT_TIMER = 160;
-	private static final String holdText = I18n.translateToLocal("misc." + ModInfo.ID + ":hold_ctrl");
+	private static final int DEFAULT_TIMER = 155;
+	private static final String holdText = I18n.format("misc." + ModInfo.ID + ":hold_eye_shortcut",
+			ClientProxy.EYE_SHORTCUT.getDisplayName());
 	private int timer = DEFAULT_TIMER;
-	private ItemStack lastHovered;
 	private int backgroundColor;
 	private int borderColorStart;
 	private int borderColorEnd;
@@ -69,13 +69,12 @@ public class EyeTooltipHandler {
 		String toDraw = holdText;
 		if (link != null) {
 			// font.drawString(holdText, x, y, 0xFFFFFF);
-			if (!GuiScreen.isCtrlKeyDown())
+			if (!ClientProxy.EYE_SHORTCUT.isKeyDown())
 				toDraw = holdText + "...";
-			else if (lastHovered == null || !lastHovered.equals(link)) {
+			else {
 				DocEntry entry = RiftRegistry.Registries.DOC_ENTRIES.getValue(link.getLinkedEntry());
 				if (entry == null || entry.getPages().size() == 0)
 					return;
-				this.lastHovered = stack;
 				toDraw = holdText + ": " + Integer.toString(timer / 40);
 				// font.drawString(":", x + holdWidth, y, 0xFFFFFF);
 				// font.drawString(Integer.toString(timer / 20), x + holdWidth +
@@ -87,9 +86,9 @@ public class EyeTooltipHandler {
 					timer = DEFAULT_TIMER;
 				} else
 					timer--;
-			} else {
-				toDraw = holdText + "...";
-				// font.drawString("...", x + holdWidth, y, 0xFFFFFF);
+				// } else {
+				// toDraw = holdText + "...";
+				// // font.drawString("...", x + holdWidth, y, 0xFFFFFF);
 			}
 			renderText(toDraw, stack, font, x, y, event.getWidth(), event.getHeight());
 		}
@@ -120,7 +119,7 @@ public class EyeTooltipHandler {
 	protected void renderText(String line, ItemStack stack, FontRenderer font, int x, int y, int width,
 			int height) {
 		// font.drawString(line, x, y, 0xFFFFFF);
-		drawHoveringText(Collections.singletonList(line), x + 100, y, width, height, -1, font);
+		drawHoveringText(Collections.singletonList(line), x - 12, y + 6, width, height, -1, font);
 		// TODO: Figure out why this isn't working
 		// GuiUtils.preItemToolTip(stack);
 		// GuiUtils.drawHoveringText(Collections.singletonList(line), x, y,
@@ -153,10 +152,8 @@ public class EyeTooltipHandler {
 
 			for (String textLine : textLines) {
 				int textLineWidth = font.getStringWidth(textLine);
-
-				if (textLineWidth > tooltipTextWidth) {
+				if (textLineWidth > tooltipTextWidth)
 					tooltipTextWidth = textLineWidth;
-				}
 			}
 
 			// boolean needsWrap = false;
@@ -224,11 +221,13 @@ public class EyeTooltipHandler {
 				}
 			}
 
-			if (tooltipY < 4) {
-				tooltipY = 4;
-			} else if (tooltipY + tooltipHeight + 4 > screenHeight) {
-				tooltipY = screenHeight - tooltipHeight - 4;
-			}
+			// if (tooltipY < 4) {
+			// tooltipY = 4;
+			// System.out.println("E:" + tooltipY);
+			// } else if (tooltipY + tooltipHeight + 4 > screenHeight) {
+			// tooltipY = screenHeight - tooltipHeight - 4;
+			// System.out.println("F:" + tooltipY);
+			// }
 
 			final int zLevel = 300;
 			// int backgroundColor = 0xF0100010;

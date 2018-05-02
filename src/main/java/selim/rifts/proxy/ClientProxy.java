@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.properties.IProperty;
@@ -14,41 +16,31 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.shader.ShaderGroup;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemDoor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryBuilder;
 import selim.rifts.EnderRifts;
 import selim.rifts.ModInfo;
 import selim.rifts.PersistencyHandler;
 import selim.rifts.RiftRegistry;
-import selim.rifts.api.docs.DocCategory;
-import selim.rifts.api.docs.DocEntry;
-import selim.rifts.api.docs.IDocEntryResource;
-import selim.rifts.api.docs.pages.DocPageText;
 import selim.rifts.blocks.BlockNewSlab;
 import selim.rifts.blocks.BlockWillowSapling;
 import selim.rifts.entities.EntityPhantomCart;
-import selim.rifts.entities.EntityPhantomPearl;
 import selim.rifts.entities.EntityReverseFallingBlock;
 import selim.rifts.entities.render.RenderPhantomCart;
 import selim.rifts.entities.render.RenderReverseFallingBlock;
@@ -63,6 +55,9 @@ import selim.rifts.utils.MiscUtils;
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
+
+	public static final KeyBinding EYE_SHORTCUT = new KeyBinding("key." + ModInfo.ID + ":eye_shortcut",
+			Keyboard.KEY_LCONTROL, "key." + ModInfo.ID + ".category");
 
 	@SubscribeEvent
 	public static void registerModels(ModelRegistryEvent event) {
@@ -82,8 +77,14 @@ public class ClientProxy extends CommonProxy {
 				} else if (obj instanceof ItemBlock) {
 					// System.out.println("ItemBlock. Registered.");
 					registerModel((ItemBlock) obj);
+				} else if (obj instanceof ItemDoor) {
+					// System.out.println("ItemDoor. Registered.");
+					registerModel((ItemDoor) obj);
 				} else if (!f.getName().equals("DEBUG_ITEM")) {
 					// System.out.println("Item, not DEBUG_ITEM. Registered.");
+					registerModel((Item) obj);
+				} else if (obj instanceof Item) {
+					// System.out.println("Item. Registered.");
 					registerModel((Item) obj);
 				} else
 					System.out.println("Failed to register: " + f.getName());
@@ -197,16 +198,17 @@ public class ClientProxy extends CommonProxy {
 						return new RenderReverseFallingBlock(manager);
 					}
 				});
-//		RenderingRegistry.registerEntityRenderingHandler(EntityPhantomPearl.class,
-//				new IRenderFactory<EntityPhantomPearl>() {
-//
-//					@Override
-//					public Render<? super EntityPhantomPearl> createRenderFor(RenderManager manager) {
-//						return new RenderSnowball<EntityPhantomPearl>(manager,
-//								RiftRegistry.Items.PHANTOM_PEARL,
-//								Minecraft.getMinecraft().getRenderItem());
-//					}
-//				});
+		// RenderingRegistry.registerEntityRenderingHandler(EntityPhantomPearl.class,
+		// new IRenderFactory<EntityPhantomPearl>() {
+		//
+		// @Override
+		// public Render<? super EntityPhantomPearl>
+		// createRenderFor(RenderManager manager) {
+		// return new RenderSnowball<EntityPhantomPearl>(manager,
+		// RiftRegistry.Items.PHANTOM_PEARL,
+		// Minecraft.getMinecraft().getRenderItem());
+		// }
+		// });
 		RenderingRegistry.registerEntityRenderingHandler(EntityPhantomCart.class,
 				new IRenderFactory<EntityPhantomCart>() {
 
@@ -216,6 +218,7 @@ public class ClientProxy extends CommonProxy {
 					}
 				});
 		ClientRegistry.bindTileEntitySpecialRenderer(TileRiftPortal.class, new TileRiftPortalRenderer());
+		ClientRegistry.registerKeyBinding(EYE_SHORTCUT);
 	}
 
 	@Override

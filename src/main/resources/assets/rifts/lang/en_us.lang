@@ -64,7 +64,7 @@ tile.rifts:willow_button.name=Rift Willow Wood Button
 
 itemGroup.rifts:main=Rifts
 
-misc.rifts:hold_ctrl=Hold Ctrl
+misc.rifts:hold_eye_shortcut=Hold %s
 misc.rifts:bound_to=Bound to
 misc.rifts:unbound=Unbound
 misc.rifts:clear_binding=Shift right click in the air to clear binding.
